@@ -1,11 +1,40 @@
-import express from "express";
-import userRouter from "./controller/router";
+import express from "express"
+import * as http from "http";
+import userController from "./controller/userController";
 
-const app = express();
-const port = 3001;
+export class YApp {
+  app: express.Application;
+  appRouter: express.Router;
+  server: http.Server;
+  port : 3000;
 
-app.use("/user", userRouter);
+  constructor() {
+    this.app = express();
+    this.appRouter = express.Router();
+    this.server = new http.Server;
+    this.init();
+    this.port = 3000
+  }
 
-app.listen(port, () => {
-  console.log(`Server is running on ${port}`);
-});
+  init() {
+    this.app.use(express.json({limit: "3mb"}));
+    this.app.use(express.urlencoded({extended: false}));
+
+    this.app.use("/", this.appRouter);
+    this.appRouter.use("/user", userController);
+
+    this.server = http.createServer(this.app);
+    this.server.on("error", (err: Error)=> {
+      process.exit(2);
+    })
+
+    this.server.listen(3000, ()=> {
+      console.log(`Server is running on ${this.port}`);
+    })
+
+
+  }
+}
+
+const app = new YApp();
+export default app;
