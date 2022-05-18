@@ -1,39 +1,105 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const userOperations_1 = __importDefault(require("./userOperations"));
+const UserService_1 = __importDefault(require("../service/UserService"));
+const schemas = __importStar(require("../validator/userValidator"));
 class UserController {
     constructor() {
         this.users = [];
         this.router = express_1.default.Router();
         this.routes();
         this.users = [];
+        this.userId = "";
     }
     getAllUser(req, res, next) {
-        // res.send()
+        let userLength = this.users.length;
+        UserService_1.default.getAllUser(userLength);
+        // return res.status(200).send(this.users);
     }
     createUser(req, res, next) {
-        // const user = req.body;
-        // const userId = uuid();
-        // const userWithId = {...user, userId : userId}
-        // this.users.push(userWithId)
-        res.send(userOperations_1.default.pushUser);
+        const user = req.body;
+        schemas.default.list
+            .validateAsync(user)
+            .then((resultValue) => {
+            UserService_1.default
+                .createUser(resultValue)
+                .then((response) => {
+                return res.status(200).send(response);
+            })
+                .catch((err) => {
+                next(err);
+            });
+        })
+            .catch((err) => {
+            next(err);
+        });
     }
     getUser(req, res, next) {
-        // const userId = req.params.id
-        // const foundUser = this.users.find((user) => user.id === userId)
-        // res.send(foundUser)
-        res.send(userOperations_1.default.findUser);
+        let userId = req.params.id;
+        let foundUserId = UserService_1.default.getUser(userId);
+        foundUserId
+            .then((response) => {
+            return res.status(200).send(response);
+        })
+            .catch((err) => {
+            next(err);
+        });
     }
     updateUser(req, res, next) {
+        let userId = req.params.id;
+        let foundUserId = UserService_1.default.getUser(userId);
+        foundUserId
+            .then((response) => {
+            let updateReqUser = req.body;
+            schemas.default.list
+                .validateAsync(updateReqUser)
+                .then((resultValue) => {
+                UserService_1.default
+                    .updateUser(resultValue)
+                    .then((response) => {
+                    return res.status(200).send(response);
+                })
+                    .catch((err) => {
+                    next(err);
+                });
+            })
+                .catch((err) => {
+                next(err);
+            });
+        })
+            .catch((err) => {
+            next(err);
+        });
     }
-    deleteUser(req, res, next) {
-    }
+    deleteUser(req, res, next) { }
     routes() {
-        this.router.get("/", this.getAllUser.bind);
+        this.router.get("/", this.getAllUser.bind(this));
         this.router.post("/", this.createUser.bind(this));
         this.router.get("/:id", this.getUser.bind(this));
         this.router.put("/:id", this.updateUser.bind(this));

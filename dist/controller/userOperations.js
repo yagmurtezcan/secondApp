@@ -32,4 +32,4 @@ class UserOperations {
 }
 const userOperations = new UserOperations();
 exports.default = userOperations;
-//# sourceMappingURL=userOperations.js.map
+//# sourceMappingURL=UserOperations.js.map

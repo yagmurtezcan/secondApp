@@ -1,6 +1,7 @@
-export default interface IUserBase {
-    firstName : string
-    lastName : string
-    email : string
-    age : number
+export default interface User {
+  firstName: string;
+  lastName: string;
+  email: string;
+  age: number;
+  id: string;
 }
