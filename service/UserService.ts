@@ -1,6 +1,6 @@
-import { rejects } from "assert";
 import { v4 as uuid } from "uuid";
 import User from "../controller/IUser";
+import UserDetail from "../interface/RequestUserDetail";
 
 class UserService {
   users: User[] = [];
@@ -9,14 +9,18 @@ class UserService {
     this.users = [];
   }
 
-  getAllUser(user: User): Promise<User> {
+  getAllUser(): Promise<User[]> {
+    if (this.users.length > 0) {
+      console.log(this.users[0].firstName);
+    }
+
     return new Promise((resolve, rejects) => {
-      if (user) {
-        resolve(user);
-      } else {
-        rejects("no data");
+      if(this.users.length >= 0){
+        resolve(this.users);
+      }else{
+        rejects("database_error")
       }
-    });
+    })
   }
 
   createUser(user: User): Promise<User> {
@@ -35,27 +39,31 @@ class UserService {
 
   getUser(userId: string): Promise<User> {
     return new Promise((resolve, rejects) => {
-      const foundUserId = this.users.find((user) => user.id === userId);
-      if (foundUserId) {
-        resolve(foundUserId);
+      const foundUser = this.users.find((user) => user.id === userId);
+      if (foundUser) {
+        resolve(foundUser);
       } else {
-        rejects("database_error");
+        rejects("user not found");
       }
     });
   }
 
-  updateUser(user: User): Promise<User> {
-    return new Promise((resolve, rejects) => {
-      if (user) {
-        const { firstName, lastName, email, age } = user;
-        user.firstName = firstName;
-        user.lastName = lastName;
-        user.email = email;
-        user.age = age;
-        resolve(user);
-      } else {
-        rejects("database_error");
-      }
+
+
+  updateUser(user: User, userId: string): Promise<User> {
+    return new Promise(async (resolve, rejects) => {
+     const foundUser = userService.getUser(userId)
+
+     if(await foundUser){
+      const {firstName, lastName, email, age} = user
+      user.firstName = firstName
+      user.lastName = lastName
+      user.email = email
+      user.age = age
+      resolve(user)
+     }else{
+       rejects("user not found")
+     }
     });
   }
 

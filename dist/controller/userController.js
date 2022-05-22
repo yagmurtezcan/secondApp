@@ -30,70 +30,49 @@ const express_1 = __importDefault(require("express"));
 const UserService_1 = __importDefault(require("../service/UserService"));
 const schemas = __importStar(require("../validator/userValidator"));
 class UserController {
+    // users: User[] = [];
     constructor() {
-        this.users = [];
         this.router = express_1.default.Router();
         this.routes();
-        this.users = [];
-        this.userId = "";
+        // this.users = [];
     }
     getAllUser(req, res, next) {
-        let userLength = this.users.length;
-        UserService_1.default.getAllUser(userLength);
-        // return res.status(200).send(this.users);
+        UserService_1.default.getAllUser().then((users) => {
+            res.status(200).send(users);
+        }).catch((err) => {
+            next(err);
+        });
     }
     createUser(req, res, next) {
         const user = req.body;
-        schemas.default.list
-            .validateAsync(user)
-            .then((resultValue) => {
-            UserService_1.default
-                .createUser(resultValue)
-                .then((response) => {
+        schemas.default.create.validateAsync(user).then((resultValue) => {
+            UserService_1.default.createUser(resultValue).then((response) => {
                 return res.status(200).send(response);
-            })
-                .catch((err) => {
+            }).catch((err) => {
                 next(err);
             });
-        })
-            .catch((err) => {
+        }).catch((err) => {
             next(err);
         });
     }
     getUser(req, res, next) {
-        let userId = req.params.id;
-        let foundUserId = UserService_1.default.getUser(userId);
-        foundUserId
-            .then((response) => {
-            return res.status(200).send(response);
-        })
-            .catch((err) => {
+        const userInfo = { id: req.params.id };
+        schemas.default.detail.validateAsync(userInfo).then((resultValue) => {
+            UserService_1.default.getUser(resultValue.id).then((response) => {
+                return res.status(200).send(response);
+            }).catch((err) => {
+                next(err);
+            });
+        }).catch((err) => {
             next(err);
         });
     }
     updateUser(req, res, next) {
-        let userId = req.params.id;
-        let foundUserId = UserService_1.default.getUser(userId);
-        foundUserId
-            .then((response) => {
-            let updateReqUser = req.body;
-            schemas.default.list
-                .validateAsync(updateReqUser)
-                .then((resultValue) => {
-                UserService_1.default
-                    .updateUser(resultValue)
-                    .then((response) => {
-                    return res.status(200).send(response);
-                })
-                    .catch((err) => {
-                    next(err);
-                });
-            })
-                .catch((err) => {
-                next(err);
-            });
-        })
-            .catch((err) => {
+        let userId = req.params.id; // useer id dolu old emin olalım.
+        let updateReqUser = req.body;
+        UserService_1.default.updateUser(updateReqUser, userId).then((user) => {
+            res.status(200).send(user);
+        }).catch((err) => {
             next(err);
         });
     }
