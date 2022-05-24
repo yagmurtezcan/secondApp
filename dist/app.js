@@ -30,6 +30,7 @@ exports.YApp = void 0;
 const express_1 = __importDefault(require("express"));
 const http = __importStar(require("http"));
 const userController_1 = __importDefault(require("./controller/userController"));
+const knex_1 = __importDefault(require("./db/knex"));
 class YApp {
     constructor() {
         this.app = (0, express_1.default)();
@@ -50,6 +51,7 @@ class YApp {
         this.server.listen(3000, () => {
             console.log(`Server is running on ${this.port}`);
         });
+        knex_1.default.init();
     }
 }
 exports.YApp = YApp;

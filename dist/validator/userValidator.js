@@ -11,6 +11,7 @@ const schemas = {
         email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } }).required(),
         age: Joi.number().integer().required(),
         id: Joi.string(),
+        isActive: Joi.boolean()
     }).options({ abortEarly: false })
 };
 exports.default = schemas;

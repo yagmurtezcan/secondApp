@@ -1,6 +1,8 @@
 import express from "express"
 import * as http from "http";
 import userController from "./controller/userController";
+import knexDB from "./db/knex";
+import userRepository from "./repository/userRepository";
 
 export class YApp {
   app: express.Application;
@@ -32,7 +34,7 @@ export class YApp {
       console.log(`Server is running on ${this.port}`);
     })
 
-
+    knexDB.init()
   }
 }
 

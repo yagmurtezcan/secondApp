@@ -1,6 +1,9 @@
+import { rejects } from "assert";
+import { resolve } from "path";
 import { v4 as uuid } from "uuid";
 import User from "../controller/IUser";
 import UserDetail from "../interface/RequestUserDetail";
+import userRepository from "../repository/userRepository";
 
 class UserService {
   users: User[] = [];
@@ -10,64 +13,63 @@ class UserService {
   }
 
   getAllUser(): Promise<User[]> {
-    if (this.users.length > 0) {
-      console.log(this.users[0].firstName);
-    }
-
     return new Promise((resolve, rejects) => {
-      if(this.users.length >= 0){
-        resolve(this.users);
-      }else{
+      userRepository.getAllUsers().then((user: User[]) => {
+        console.log(JSON.stringify(user))
+        resolve(user)
+      }).catch(err => {
+        console.error("Err: " + err)
         rejects("database_error")
-      }
+      })
     })
   }
 
   createUser(user: User): Promise<User> {
     return new Promise((resolve, reject) => {
-      if (user) {
-        const userId = uuid();
-        const userWithId = { ...user, id: userId };
-        this.users.push(userWithId);
-
-        resolve(userWithId);
-      } else {
-        reject("database_error");
-      }
+      userRepository.createUser(user).then((resultValue: User) => {
+        resolve(resultValue)
+      }).catch((err: Error) => {
+        reject(err)
+      })
     });
   }
 
   getUser(userId: string): Promise<User> {
     return new Promise((resolve, rejects) => {
-      const foundUser = this.users.find((user) => user.id === userId);
-      if (foundUser) {
-        resolve(foundUser);
-      } else {
-        rejects("user not found");
-      }
+      userRepository.getUser(userId).then((user: User) => {
+          resolve(user)
+      }).catch((err: Error) => {
+        rejects(err)
+      })
     });
   }
 
-
-
-  updateUser(user: User, userId: string): Promise<User> {
+  updateUser(userUpdateData: User, userId: UserDetail): Promise<User> {
     return new Promise(async (resolve, rejects) => {
-     const foundUser = userService.getUser(userId)
-
-     if(await foundUser){
-      const {firstName, lastName, email, age} = user
-      user.firstName = firstName
-      user.lastName = lastName
-      user.email = email
-      user.age = age
-      resolve(user)
-     }else{
-       rejects("user not found")
-     }
+      userService.getUser(userId.id).then((user: User) => {
+        userRepository.updateUser(userUpdateData, userId.id).then((updatedUser) => {
+          resolve(updatedUser)
+        }).catch((err: Error) => {
+          rejects(err)
+        })
+      })
     });
   }
 
-  deleteUser() {}
+  deleteUser(userId: string): Promise<User> {
+    return new Promise((resolve, rejects) => {
+      userService.getUser(userId).then((user: User) => {
+        userRepository.deleteUser(user, userId).then((deletedUser: User) => {
+          resolve(deletedUser)
+        }).catch((err: Error) => {
+          rejects(err)
+        })
+      }).catch((err: Error) => {
+        rejects(err)
+      })
+    
+    })
+  }
 }
 
 const userService = new UserService();

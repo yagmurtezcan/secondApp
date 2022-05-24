@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import IRouterBase from "./IRouter";
 import userService from "../service/UserService";
 import * as schemas from "../validator/userValidator";
@@ -7,12 +7,10 @@ import UserDetail from "../interface/RequestUserDetail";
 
 class UserController implements IRouterBase {
   router: express.Router;
-  // users: User[] = [];
 
   constructor() {
     this.router = express.Router();
     this.routes();
-    // this.users = [];
   }
 
   getAllUser( req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -39,8 +37,8 @@ class UserController implements IRouterBase {
 
   getUser(req: express.Request, res: express.Response, next: express.NextFunction) {
     const userInfo: UserDetail = {id: req.params.id}
-    schemas.default.detail.validateAsync(userInfo).then((resultValue: UserDetail) => {
-      userService.getUser(resultValue.id).then((response: User) => {
+    schemas.default.detail.validateAsync(userInfo).then((userId: UserDetail) => {
+      userService.getUser(userId.id).then((response: User) => {
         return res.status(200).send(response);
       }).catch((err: Error) => {
         next(err)
@@ -51,23 +49,32 @@ class UserController implements IRouterBase {
   }
 
   updateUser(req: express.Request, res: express.Response, next: express.NextFunction) {
-    let userId = req.params.id; // useer id dolu old emin olalım.
-    let updateReqUser: User = req.body;
-    userService.updateUser(updateReqUser, userId).then((user: User) => {
-      res.status(200).send(user)
+    const userInfo: UserDetail = {id: req.params.id}
+    schemas.default.detail.validateAsync(userInfo).then((userId: UserDetail) =>{
+      let updateReqUser: User = req.body;
+      userService.updateUser(updateReqUser, userId).then((user: User) => {
+        res.status(200).send(user)
+      }).catch((err: Error) => {
+        next(err)
+      })
     }).catch((err: Error) => {
       next(err)
     })
-
-    
-   
   }
 
-  deleteUser(
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) {}
+  deleteUser(req: express.Request, res: express.Response, next: express.NextFunction) {
+    const userInfo: UserDetail = {id: req.params.id}
+    schemas.default.detail.validateAsync(userInfo).then((userId: UserDetail) => {
+      userService.deleteUser(userId.id).then((response: User) => {
+        return res.status(200).json({
+          status_code: 1,
+          message: "Operation Completed"
+        })
+      })
+    }).catch((err: Error) => {
+      next(err)
+    })
+  }
 
   routes() {
     this.router.get("/", this.getAllUser.bind(this));

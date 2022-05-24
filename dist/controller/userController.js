@@ -30,11 +30,9 @@ const express_1 = __importDefault(require("express"));
 const UserService_1 = __importDefault(require("../service/UserService"));
 const schemas = __importStar(require("../validator/userValidator"));
 class UserController {
-    // users: User[] = [];
     constructor() {
         this.router = express_1.default.Router();
         this.routes();
-        // this.users = [];
     }
     getAllUser(req, res, next) {
         UserService_1.default.getAllUser().then((users) => {
@@ -57,8 +55,8 @@ class UserController {
     }
     getUser(req, res, next) {
         const userInfo = { id: req.params.id };
-        schemas.default.detail.validateAsync(userInfo).then((resultValue) => {
-            UserService_1.default.getUser(resultValue.id).then((response) => {
+        schemas.default.detail.validateAsync(userInfo).then((userId) => {
+            UserService_1.default.getUser(userId.id).then((response) => {
                 return res.status(200).send(response);
             }).catch((err) => {
                 next(err);
@@ -68,15 +66,31 @@ class UserController {
         });
     }
     updateUser(req, res, next) {
-        let userId = req.params.id; // useer id dolu old emin olalım.
-        let updateReqUser = req.body;
-        UserService_1.default.updateUser(updateReqUser, userId).then((user) => {
-            res.status(200).send(user);
+        const userInfo = { id: req.params.id };
+        schemas.default.detail.validateAsync(userInfo).then((userId) => {
+            let updateReqUser = req.body;
+            UserService_1.default.updateUser(updateReqUser, userId).then((user) => {
+                res.status(200).send(user);
+            }).catch((err) => {
+                next(err);
+            });
         }).catch((err) => {
             next(err);
         });
     }
-    deleteUser(req, res, next) { }
+    deleteUser(req, res, next) {
+        const userInfo = { id: req.params.id };
+        schemas.default.detail.validateAsync(userInfo).then((userId) => {
+            UserService_1.default.deleteUser(userId.id).then((response) => {
+                return res.status(200).json({
+                    status_code: 1,
+                    message: "Operation Completed"
+                });
+            });
+        }).catch((err) => {
+            next(err);
+        });
+    }
     routes() {
         this.router.get("/", this.getAllUser.bind(this));
         this.router.post("/", this.createUser.bind(this));
