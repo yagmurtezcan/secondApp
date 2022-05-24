@@ -1,9 +1,5 @@
-import { rejects } from "assert";
-import knex from "knex";
-import { resolve } from "path";
 import User from "../controller/IUser";
 import knexDB from "../db/knex";
-import UserDetail from "../interface/RequestUserDetail";
 
 class UserRepository {
     getAllUsers(): Promise<User[]> {
@@ -26,7 +22,28 @@ class UserRepository {
                 .where("id", userId)
                 .then((res: any) => {
                     const user = res;
-                    resolve(user)
+                    if(user.length > 0){
+                        resolve(user)
+                    }else{
+                        rejects("user not found")
+                    }
+                }).catch((err: Error) => {
+                    rejects(err)
+                })
+        })
+    }
+
+    getUserByEmail(email: string): Promise<User> {
+        return new Promise(async (resolve, rejects) => {
+            await knexDB.db("user")
+                .select("*")
+                .where("email", email)
+                .then((res: any) => {
+                    if(res.length == 0){
+                        resolve(res)
+                    }else{
+                        rejects("email exits")
+                    }
                 }).catch((err: Error) => {
                     rejects(err)
                 })
@@ -34,10 +51,9 @@ class UserRepository {
     }
 
     createUser(user: User): Promise<User> {
-        return new Promise(async (resolve,rejects) => {
-            // this.getUserByEmail(user.email)
-            // reject("duplicate_user")
-            await knexDB.db("user")
+        return new Promise((resolve,rejects) => {
+            userRepository.getUserByEmail(user.email).then((userFromDB: User) => {
+                 knexDB.db("user")
                 .insert(user)
                 .returning("*")
                 .then((res: any) => {
@@ -46,27 +62,35 @@ class UserRepository {
                 }).catch((err: Error) => {
                     rejects(err)
                 })
+            }).catch((err: Error) => {
+                rejects(err)
+            })
         })
     }
 
     updateUser(userUpdateData: User, userId: string): Promise<User> {
-        return new Promise(async (resolve, rejects) => {
-            await knexDB.db("user")
-                .update(userUpdateData)
-                .returning("*")
-                .where("id", userId)
-                .then((res: any) => {
-                    const user = res
-                    resolve(user)
-                }).catch((err: Error) => {
-                    rejects(err)
-                })
+        return new Promise((resolve, rejects) => {
+            userRepository.getUser(userId).then((user: User) => {
+                    knexDB.db("user")
+                    .update(userUpdateData)
+                    .returning("*")
+                    .where("id", userId)
+                    .then((res: any) => {
+                        const user = res
+                        resolve(user)
+                    }).catch((err: Error) => {
+                        rejects(err)
+                    })
+            }).catch((err: Error) => {
+                rejects(err)
+            })
         })
     }
 
-    deleteUser(user: User, userId: string): Promise<User> {
-        return new Promise(async (resolve, rejects) => {
-            await knexDB.db("user")
+    deleteUser(userId: string): Promise<User> {
+        return new Promise((resolve, rejects) => {
+            userRepository.getUser(userId).then((user: User) => {
+                 knexDB.db("user")
                 .where("id", userId)
                 .del()
                 .then((res: any) => {
@@ -74,6 +98,10 @@ class UserRepository {
                 }).catch((err: Error) => {
                     rejects(err)
                 })
+            }).catch((err: Error) => {
+                rejects(err)
+            })
+            
         })
     }
       

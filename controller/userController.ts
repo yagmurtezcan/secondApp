@@ -1,4 +1,4 @@
-import express, { response } from "express";
+import express from "express";
 import IRouterBase from "./IRouter";
 import userService from "../service/UserService";
 import * as schemas from "../validator/userValidator";
@@ -15,7 +15,11 @@ class UserController implements IRouterBase {
 
   getAllUser( req: express.Request, res: express.Response, next: express.NextFunction) {
     userService.getAllUser().then((users: User[]) => {
-      res.status(200).send(users);
+      res.status(200).json({
+        status_code: 1,
+        message: "Operation Completed",
+        data: users
+      })
     }).catch((err: Error) => {
       next(err)
     })
@@ -26,7 +30,11 @@ class UserController implements IRouterBase {
 
     schemas.default.create.validateAsync(user).then((resultValue: User) => {
       userService.createUser(resultValue).then((response: User) => {
-            return res.status(200).send(response);
+            return res.status(200).json({
+              status_code: 1,
+              message: "Operation Completed",
+              data: response
+            });
           }).catch((err: Error) => {
             next(err);
           });
@@ -37,9 +45,14 @@ class UserController implements IRouterBase {
 
   getUser(req: express.Request, res: express.Response, next: express.NextFunction) {
     const userInfo: UserDetail = {id: req.params.id}
+
     schemas.default.detail.validateAsync(userInfo).then((userId: UserDetail) => {
       userService.getUser(userId.id).then((response: User) => {
-        return res.status(200).send(response);
+        return res.status(200).json({
+          status_code: 1,
+          message: "Operation Completed",
+          data: response
+        });
       }).catch((err: Error) => {
         next(err)
       })
@@ -50,10 +63,15 @@ class UserController implements IRouterBase {
 
   updateUser(req: express.Request, res: express.Response, next: express.NextFunction) {
     const userInfo: UserDetail = {id: req.params.id}
+
     schemas.default.detail.validateAsync(userInfo).then((userId: UserDetail) =>{
       let updateReqUser: User = req.body;
       userService.updateUser(updateReqUser, userId).then((user: User) => {
-        res.status(200).send(user)
+        res.status(200).json({
+          status_code: 1,
+          message: "Operation Completed",
+          data: user
+        })
       }).catch((err: Error) => {
         next(err)
       })
@@ -64,12 +82,15 @@ class UserController implements IRouterBase {
 
   deleteUser(req: express.Request, res: express.Response, next: express.NextFunction) {
     const userInfo: UserDetail = {id: req.params.id}
+
     schemas.default.detail.validateAsync(userInfo).then((userId: UserDetail) => {
       userService.deleteUser(userId.id).then((response: User) => {
         return res.status(200).json({
           status_code: 1,
           message: "Operation Completed"
         })
+      }).catch((err: Error) => {
+        next(err)
       })
     }).catch((err: Error) => {
       next(err)

@@ -2,7 +2,6 @@ import express from "express"
 import * as http from "http";
 import userController from "./controller/userController";
 import knexDB from "./db/knex";
-import userRepository from "./repository/userRepository";
 
 export class YApp {
   app: express.Application;

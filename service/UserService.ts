@@ -1,16 +1,8 @@
-import { rejects } from "assert";
-import { resolve } from "path";
-import { v4 as uuid } from "uuid";
 import User from "../controller/IUser";
 import UserDetail from "../interface/RequestUserDetail";
 import userRepository from "../repository/userRepository";
 
 class UserService {
-  users: User[] = [];
-
-  constructor() {
-    this.users = [];
-  }
 
   getAllUser(): Promise<User[]> {
     return new Promise((resolve, rejects) => {
@@ -46,28 +38,21 @@ class UserService {
 
   updateUser(userUpdateData: User, userId: UserDetail): Promise<User> {
     return new Promise(async (resolve, rejects) => {
-      userService.getUser(userId.id).then((user: User) => {
         userRepository.updateUser(userUpdateData, userId.id).then((updatedUser) => {
           resolve(updatedUser)
         }).catch((err: Error) => {
           rejects(err)
         })
-      })
     });
   }
 
   deleteUser(userId: string): Promise<User> {
     return new Promise((resolve, rejects) => {
-      userService.getUser(userId).then((user: User) => {
-        userRepository.deleteUser(user, userId).then((deletedUser: User) => {
+        userRepository.deleteUser(userId).then((deletedUser: User) => {
           resolve(deletedUser)
         }).catch((err: Error) => {
           rejects(err)
         })
-      }).catch((err: Error) => {
-        rejects(err)
-      })
-    
     })
   }
 }

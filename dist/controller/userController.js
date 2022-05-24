@@ -36,7 +36,11 @@ class UserController {
     }
     getAllUser(req, res, next) {
         UserService_1.default.getAllUser().then((users) => {
-            res.status(200).send(users);
+            res.status(200).json({
+                status_code: 1,
+                message: "Operation Completed",
+                data: users
+            });
         }).catch((err) => {
             next(err);
         });
@@ -45,7 +49,11 @@ class UserController {
         const user = req.body;
         schemas.default.create.validateAsync(user).then((resultValue) => {
             UserService_1.default.createUser(resultValue).then((response) => {
-                return res.status(200).send(response);
+                return res.status(200).json({
+                    status_code: 1,
+                    message: "Operation Completed",
+                    data: response
+                });
             }).catch((err) => {
                 next(err);
             });
@@ -57,7 +65,11 @@ class UserController {
         const userInfo = { id: req.params.id };
         schemas.default.detail.validateAsync(userInfo).then((userId) => {
             UserService_1.default.getUser(userId.id).then((response) => {
-                return res.status(200).send(response);
+                return res.status(200).json({
+                    status_code: 1,
+                    message: "Operation Completed",
+                    data: response
+                });
             }).catch((err) => {
                 next(err);
             });
@@ -70,7 +82,11 @@ class UserController {
         schemas.default.detail.validateAsync(userInfo).then((userId) => {
             let updateReqUser = req.body;
             UserService_1.default.updateUser(updateReqUser, userId).then((user) => {
-                res.status(200).send(user);
+                res.status(200).json({
+                    status_code: 1,
+                    message: "Operation Completed",
+                    data: user
+                });
             }).catch((err) => {
                 next(err);
             });
@@ -86,6 +102,8 @@ class UserController {
                     status_code: 1,
                     message: "Operation Completed"
                 });
+            }).catch((err) => {
+                next(err);
             });
         }).catch((err) => {
             next(err);

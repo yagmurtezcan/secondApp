@@ -33,50 +33,84 @@ class UserRepository {
                 .where("id", userId)
                 .then((res) => {
                 const user = res;
-                resolve(user);
+                if (user.length > 0) {
+                    resolve(user);
+                }
+                else {
+                    rejects("user not found");
+                }
             }).catch((err) => {
                 rejects(err);
             });
         }));
     }
-    createUser(user) {
+    getUserByEmail(email) {
         return new Promise((resolve, rejects) => __awaiter(this, void 0, void 0, function* () {
             yield knex_1.default.db("user")
-                .insert(user)
-                .returning("*")
-                .then((res) => {
-                const user = res;
-                resolve(user);
-            }).catch((err) => {
-                rejects(err);
-            });
-        }));
-    }
-    updateUser(userUpdateData, userId) {
-        return new Promise((resolve, rejects) => __awaiter(this, void 0, void 0, function* () {
-            yield knex_1.default.db("user")
-                .update({ user: userUpdateData })
-                .returning("*")
-                .where("id", userId)
-                .then((res) => {
-                const user = res;
-                resolve(user);
-            }).catch((err) => {
-                rejects(err);
-            });
-        }));
-    }
-    deleteUser(user, userId) {
-        return new Promise((resolve, rejects) => __awaiter(this, void 0, void 0, function* () {
-            yield knex_1.default.db("user")
-                .where("id", userId)
-                .del()
+                .select("*")
+                .where("email", email)
                 .then((res) => {
                 resolve(res);
             }).catch((err) => {
                 rejects(err);
             });
         }));
+    }
+    createUser(user) {
+        return new Promise((resolve, rejects) => {
+            userRepository.getUserByEmail(user.email).then((userFromDB) => {
+                if (user.email === userFromDB.email) {
+                    return rejects("dublicate user");
+                }
+                else {
+                    knex_1.default.db("user")
+                        .insert(user)
+                        .returning("*")
+                        .then((res) => {
+                        const user = res;
+                        resolve(user);
+                    }).catch((err) => {
+                        rejects(err);
+                    });
+                }
+            }).catch((err) => {
+                rejects(err);
+            });
+        });
+    }
+    updateUser(userUpdateData, userId) {
+        return new Promise((resolve, rejects) => {
+            userRepository.getUser(userId).then((user) => {
+                knex_1.default.db("user")
+                    .update(userUpdateData)
+                    .returning("*")
+                    .where("id", userId)
+                    .then((res) => {
+                    const user = res;
+                    resolve(user);
+                }).catch((err) => {
+                    rejects(err);
+                });
+            }).catch((err) => {
+                rejects(err);
+            });
+        });
+    }
+    deleteUser(userId) {
+        return new Promise((resolve, rejects) => {
+            userRepository.getUser(userId).then((user) => {
+                knex_1.default.db("user")
+                    .where("id", userId)
+                    .del()
+                    .then((res) => {
+                    resolve(res);
+                }).catch((err) => {
+                    rejects(err);
+                });
+            }).catch((err) => {
+                rejects(err);
+            });
+        });
     }
 }
 const userRepository = new UserRepository();

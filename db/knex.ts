@@ -1,6 +1,4 @@
 import {knex, Knex} from "knex"
-import User from "../controller/IUser";
-import userRepository from "../repository/userRepository";
 
 class  KnexDB {
 config: Knex.Config = {

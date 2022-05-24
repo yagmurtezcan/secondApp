@@ -14,10 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const userRepository_1 = __importDefault(require("../repository/userRepository"));
 class UserService {
-    constructor() {
-        this.users = [];
-        this.users = [];
-    }
     getAllUser() {
         return new Promise((resolve, rejects) => {
             userRepository_1.default.getAllUsers().then((user) => {
@@ -36,14 +32,6 @@ class UserService {
             }).catch((err) => {
                 reject(err);
             });
-            // if (user) {
-            //   const userId = uuid();
-            //   const userWithId = { ...user, id: userId };
-            //   this.users.push(userWithId);
-            //   resolve(userWithId);
-            // } else {
-            //   reject("database_error");
-            // }
         });
     }
     getUser(userId) {
@@ -57,33 +45,17 @@ class UserService {
     }
     updateUser(userUpdateData, userId) {
         return new Promise((resolve, rejects) => __awaiter(this, void 0, void 0, function* () {
-            userService.getUser(userId.id).then((user) => {
-                userRepository_1.default.updateUser(userUpdateData, userId).then((updatedUser) => {
-                    resolve(updatedUser);
-                }).catch((err) => {
-                    rejects(err);
-                });
+            userRepository_1.default.updateUser(userUpdateData, userId.id).then((updatedUser) => {
+                resolve(updatedUser);
+            }).catch((err) => {
+                rejects(err);
             });
-            //  userService.getUser(userId.id).then((user: User)=> {
-            //   const {firstName, lastName, email, age} = userUpdateData
-            //   user.firstName = firstName
-            //   user.lastName = lastName
-            //   user.email = email
-            //   user.age = age
-            //   resolve(user)
-            //  }).catch((err: Error) => {
-            //   rejects("err")
-            //  })
         }));
     }
     deleteUser(userId) {
         return new Promise((resolve, rejects) => {
-            userService.getUser(userId).then((user) => {
-                userRepository_1.default.deleteUser(user, userId).then((deletedUser) => {
-                    resolve(deletedUser);
-                }).catch((err) => {
-                    rejects(err);
-                });
+            userRepository_1.default.deleteUser(userId).then((deletedUser) => {
+                resolve(deletedUser);
             }).catch((err) => {
                 rejects(err);
             });
