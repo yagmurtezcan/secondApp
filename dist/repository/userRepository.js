@@ -50,7 +50,12 @@ class UserRepository {
                 .select("*")
                 .where("email", email)
                 .then((res) => {
-                resolve(res);
+                if (res.length == 0) {
+                    resolve(res);
+                }
+                else {
+                    rejects("email exits");
+                }
             }).catch((err) => {
                 rejects(err);
             });
@@ -59,20 +64,15 @@ class UserRepository {
     createUser(user) {
         return new Promise((resolve, rejects) => {
             userRepository.getUserByEmail(user.email).then((userFromDB) => {
-                if (user.email === userFromDB.email) {
-                    return rejects("dublicate user");
-                }
-                else {
-                    knex_1.default.db("user")
-                        .insert(user)
-                        .returning("*")
-                        .then((res) => {
-                        const user = res;
-                        resolve(user);
-                    }).catch((err) => {
-                        rejects(err);
-                    });
-                }
+                knex_1.default.db("user")
+                    .insert(user)
+                    .returning("*")
+                    .then((res) => {
+                    const user = res;
+                    resolve(user);
+                }).catch((err) => {
+                    rejects(err);
+                });
             }).catch((err) => {
                 rejects(err);
             });

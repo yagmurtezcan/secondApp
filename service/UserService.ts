@@ -1,4 +1,4 @@
-import User from "../controller/IUser";
+import User from "../interface/IUser";
 import UserDetail from "../interface/RequestUserDetail";
 import userRepository from "../repository/userRepository";
 

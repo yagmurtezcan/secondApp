@@ -1,8 +1,8 @@
 import express from "express";
-import IRouterBase from "./IRouter";
+import IRouterBase from "../interface/IRouter";
 import userService from "../service/UserService";
 import * as schemas from "../validator/userValidator";
-import User from "./IUser";
+import User from "../interface/IUser";
 import UserDetail from "../interface/RequestUserDetail";
 
 class UserController implements IRouterBase {
@@ -13,7 +13,7 @@ class UserController implements IRouterBase {
     this.routes();
   }
 
-  getAllUser( req: express.Request, res: express.Response, next: express.NextFunction) {
+  getAllUser(req: express.Request, res: express.Response, next: express.NextFunction) {
     userService.getAllUser().then((users: User[]) => {
       res.status(200).json({
         status_code: 1,

@@ -1,4 +1,4 @@
-import User from "../controller/IUser";
+import User from "../interface/IUser";
 import knexDB from "../db/knex";
 
 class UserRepository {

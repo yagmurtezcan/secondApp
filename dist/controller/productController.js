@@ -26,37 +26,40 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.YApp = void 0;
 const express_1 = __importDefault(require("express"));
-const http = __importStar(require("http"));
-const productController_1 = __importDefault(require("./controller/productController"));
-const userController_1 = __importDefault(require("./controller/userController"));
-const knex_1 = __importDefault(require("./db/knex"));
-class YApp {
+const ProductService_1 = __importDefault(require("../service/ProductService"));
+const schemas = __importStar(require("../validator/productValidator"));
+class ProductController {
     constructor() {
-        this.app = (0, express_1.default)();
-        this.appRouter = express_1.default.Router();
-        this.server = new http.Server;
-        this.init();
-        this.port = 3000;
+        this.router = express_1.default.Router();
+        this.routes();
     }
-    init() {
-        this.app.use(express_1.default.json({ limit: "3mb" }));
-        this.app.use(express_1.default.urlencoded({ extended: false }));
-        this.app.use("/", this.appRouter);
-        this.appRouter.use("/user", userController_1.default);
-        this.appRouter.use("/product", productController_1.default);
-        this.server = http.createServer(this.app);
-        this.server.on("error", (err) => {
-            process.exit(2);
+    getAllProduct(req, res, next) {
+    }
+    createProduct(req, res, next) {
+        const product = req.body;
+        schemas.default.create.validateAsync(product).then((validatedProduct) => {
+            ProductService_1.default.createProduct(validatedProduct).then((productFromService) => {
+                res.status(200).json({
+                    status_code: 1,
+                    message: "Operation Completed",
+                    data: productFromService
+                });
+            }).catch((err) => {
+                next(err);
+            });
+        }).catch((err) => {
+            next(err);
         });
-        this.server.listen(3000, () => {
-            console.log(`Server is running on ${this.port}`);
-        });
-        knex_1.default.init();
+    }
+    deleteProduct(req, res, next) {
+    }
+    routes() {
+        this.router.get("/", this.getAllProduct.bind(this));
+        this.router.post("/", this.createProduct.bind(this));
+        this.router.delete("/:id", this.deleteProduct.bind(this));
     }
 }
-exports.YApp = YApp;
-const app = new YApp();
-exports.default = app;
-//# sourceMappingURL=app.js.map
+const productController = new ProductController();
+exports.default = productController.router;
+//# sourceMappingURL=productController.js.map

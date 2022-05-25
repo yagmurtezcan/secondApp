@@ -3,7 +3,7 @@ const Joi  = require("joi");
 const schemas = {
 detail: Joi.object().keys({
   id:  Joi.string().required(),
-}).options({abortEarly : false}),
+}).options({abortEarly: false}),
 
 create: Joi.object().keys({
   firstname: Joi.string().min(2).max(50).trim().required(),
@@ -12,7 +12,7 @@ create: Joi.object().keys({
   age: Joi.number().integer().required(),
   id:  Joi.string(),
   isActive: Joi.boolean()
-}).options({abortEarly : false})
+}).options({abortEarly: false})
 }
 
 export default schemas;
