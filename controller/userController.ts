@@ -66,7 +66,7 @@ class UserController implements IRouterBase {
 
     schemas.default.detail.validateAsync(userInfo).then((userId: UserDetail) =>{
       let updateReqUser: User = req.body;
-      userService.updateUser(updateReqUser, userId).then((user: User) => {
+      userService.updateUser(updateReqUser, userId.id).then((user: User) => {
         res.status(200).json({
           status_code: 1,
           message: "Operation Completed",

@@ -81,7 +81,7 @@ class UserController {
         const userInfo = { id: req.params.id };
         schemas.default.detail.validateAsync(userInfo).then((userId) => {
             let updateReqUser = req.body;
-            UserService_1.default.updateUser(updateReqUser, userId).then((user) => {
+            UserService_1.default.updateUser(updateReqUser, userId.id).then((user) => {
                 res.status(200).json({
                     status_code: 1,
                     message: "Operation Completed",

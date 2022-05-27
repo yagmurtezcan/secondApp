@@ -21,24 +21,6 @@ class BasketRepository {
         return new Promise((resolve, rejects) => {
         });
     }
-    getUserFromBasketUrl(userId) {
-        return new Promise((resolve, rejects) => {
-            knex_1.default.db("user")
-                .select("*")
-                .where("id", userId)
-                .then((res) => {
-                const user = res;
-                if (user.length > 0) {
-                    resolve(user);
-                }
-                else {
-                    rejects("user not found");
-                }
-            }).catch((err) => {
-                rejects(err);
-            });
-        });
-    }
     getProductById(productId) {
         return new Promise((resolve, rejects) => {
             knex_1.default.db("product")

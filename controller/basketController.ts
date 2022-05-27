@@ -41,16 +41,6 @@ class BasketController implements IRouterBase{
 
     deleteFromBasket(req: express.Request, res: express.Response, next: express.NextFunction) {
         const userId: BasketDetail = {id: req.params.id}
-
-        // schemas.default.detail.validateAsync(userId).then((validatedUserId: BasketDetail) => {
-        //     basketService.getUserFromBasketUrl(validatedUserId.id).then((user) => {
-                
-        //     }).catch((err: Error) => {
-        //         next(err)
-        //     })
-        // }).catch((err: Error) => {
-        //     next(err)
-        // })
     }
 
     routes() {

@@ -22,25 +22,7 @@ class BasketRepository {
 
         })
     }
-
-    getUserFromBasketUrl(userId: string): Promise<User[]> {
-        return new Promise((resolve, rejects) => {
-            knexDB.db("user")
-                .select("*")
-                .where("id", userId)
-                .then((res: any) => {
-                    const user = res
-                    if(user.length > 0){
-                        resolve(user)
-                    }else{
-                        rejects("user not found")
-                    }
-                }).catch((err: Error) => {
-                    rejects(err)
-                })
-        })
-    }
-
+    
     getProductById(productId: number): Promise<Product> {
         return new Promise((resolve, rejects) => {
             knexDB.db("product")

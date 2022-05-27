@@ -26,11 +26,15 @@ class UserService {
         });
     }
     createUser(user) {
-        return new Promise((resolve, reject) => {
-            userRepository_1.default.createUser(user).then((resultValue) => {
-                resolve(resultValue);
+        return new Promise((resolve, rejects) => {
+            userRepository_1.default.getUserByEmail(user.email).then((userFromDB) => {
+                userRepository_1.default.createUser(user).then((resultValue) => {
+                    resolve(resultValue);
+                }).catch((err) => {
+                    rejects(err);
+                });
             }).catch((err) => {
-                reject(err);
+                rejects(err);
             });
         });
     }
@@ -45,8 +49,12 @@ class UserService {
     }
     updateUser(userUpdateData, userId) {
         return new Promise((resolve, rejects) => __awaiter(this, void 0, void 0, function* () {
-            userRepository_1.default.updateUser(userUpdateData, userId.id).then((updatedUser) => {
-                resolve(updatedUser);
+            userRepository_1.default.getUser(userId).then((user) => {
+                userRepository_1.default.updateUser(userUpdateData, userId).then((updatedUser) => {
+                    resolve(updatedUser);
+                }).catch((err) => {
+                    rejects(err);
+                });
             }).catch((err) => {
                 rejects(err);
             });
@@ -54,8 +62,12 @@ class UserService {
     }
     deleteUser(userId) {
         return new Promise((resolve, rejects) => {
-            userRepository_1.default.deleteUser(userId).then((deletedUser) => {
-                resolve(deletedUser);
+            userRepository_1.default.getUser(userId).then((user) => {
+                userRepository_1.default.deleteUser(userId).then((deletedUser) => {
+                    resolve(deletedUser);
+                }).catch((err) => {
+                    rejects(err);
+                });
             }).catch((err) => {
                 rejects(err);
             });

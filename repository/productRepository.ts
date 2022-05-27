@@ -50,7 +50,6 @@ class ProductRepository {
 
     deleteProduct(productId: string): Promise<Product> {
         return new Promise((resolve, rejects) => {
-            productRepository.getProductById(productId).then((resFromgetId: Product) => {
                 knexDB.db("product")
                     .where("id", productId)
                     .del()
@@ -59,9 +58,6 @@ class ProductRepository {
                     }).catch((err: Error) => {
                         rejects(err)
                     })
-            }).catch((err: Error) => {
-                rejects(err)
-            })
         })
     }
 }

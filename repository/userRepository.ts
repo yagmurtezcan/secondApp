@@ -52,7 +52,6 @@ class UserRepository {
 
     createUser(user: User): Promise<User> {
         return new Promise((resolve,rejects) => {
-            userRepository.getUserByEmail(user.email).then((userFromDB: User) => {
                  knexDB.db("user")
                 .insert(user)
                 .returning("*")
@@ -62,25 +61,18 @@ class UserRepository {
                 }).catch((err: Error) => {
                     rejects(err)
                 })
-            }).catch((err: Error) => {
-                rejects(err)
-            })
         })
     }
 
     updateUser(userUpdateData: User, userId: string): Promise<User> {
         return new Promise((resolve, rejects) => {
-            userRepository.getUser(userId).then((user: User[]) => {
-                    knexDB.db("user")
-                    .update(userUpdateData)
-                    .returning("*")
-                    .where("id", userId)
-                    .then((res: any) => {
-                        const user = res
-                        resolve(user)
-                    }).catch((err: Error) => {
-                        rejects(err)
-                    })
+            knexDB.db("user")
+            .update(userUpdateData)
+            .returning("*")
+            .where("id", userId)
+            .then((res: any) => {
+                const user = res
+                resolve(user)
             }).catch((err: Error) => {
                 rejects(err)
             })
@@ -89,7 +81,6 @@ class UserRepository {
 
     deleteUser(userId: string): Promise<User> {
         return new Promise((resolve, rejects) => {
-            userRepository.getUser(userId).then((user: User[]) => {
                  knexDB.db("user")
                 .where("id", userId)
                 .del()
@@ -98,10 +89,6 @@ class UserRepository {
                 }).catch((err: Error) => {
                     rejects(err)
                 })
-            }).catch((err: Error) => {
-                rejects(err)
-            })
-            
         })
     }
       

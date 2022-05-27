@@ -63,16 +63,12 @@ class UserRepository {
     }
     createUser(user) {
         return new Promise((resolve, rejects) => {
-            userRepository.getUserByEmail(user.email).then((userFromDB) => {
-                knex_1.default.db("user")
-                    .insert(user)
-                    .returning("*")
-                    .then((res) => {
-                    const user = res;
-                    resolve(user);
-                }).catch((err) => {
-                    rejects(err);
-                });
+            knex_1.default.db("user")
+                .insert(user)
+                .returning("*")
+                .then((res) => {
+                const user = res;
+                resolve(user);
             }).catch((err) => {
                 rejects(err);
             });
@@ -80,17 +76,13 @@ class UserRepository {
     }
     updateUser(userUpdateData, userId) {
         return new Promise((resolve, rejects) => {
-            userRepository.getUser(userId).then((user) => {
-                knex_1.default.db("user")
-                    .update(userUpdateData)
-                    .returning("*")
-                    .where("id", userId)
-                    .then((res) => {
-                    const user = res;
-                    resolve(user);
-                }).catch((err) => {
-                    rejects(err);
-                });
+            knex_1.default.db("user")
+                .update(userUpdateData)
+                .returning("*")
+                .where("id", userId)
+                .then((res) => {
+                const user = res;
+                resolve(user);
             }).catch((err) => {
                 rejects(err);
             });
@@ -98,15 +90,11 @@ class UserRepository {
     }
     deleteUser(userId) {
         return new Promise((resolve, rejects) => {
-            userRepository.getUser(userId).then((user) => {
-                knex_1.default.db("user")
-                    .where("id", userId)
-                    .del()
-                    .then((res) => {
-                    resolve(res);
-                }).catch((err) => {
-                    rejects(err);
-                });
+            knex_1.default.db("user")
+                .where("id", userId)
+                .del()
+                .then((res) => {
+                resolve(res);
             }).catch((err) => {
                 rejects(err);
             });

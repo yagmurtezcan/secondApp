@@ -43,7 +43,7 @@ class BasketController {
                     res.status(200).json({
                         status_code: 1,
                         message: "Operation Completed",
-                        data: basketFromService
+                        // data: basketFromService
                     });
                 }).catch((err) => {
                     next(err);
@@ -57,42 +57,10 @@ class BasketController {
     }
     deleteFromBasket(req, res, next) {
         const userId = { id: req.params.id };
-        // schemas.default.detail.validateAsync(userId).then((validatedUserId: BasketDetail) => {
-        //     basketService.getUserFromBasketUrl(validatedUserId.id).then((user) => {
-        //     }).catch((err: Error) => {
-        //         next(err)
-        //     })
-        // }).catch((err: Error) => {
-        //     next(err)
-        // })
     }
-    // getBasketList(req: express.Request, res: express.Response, next: express.NextFunction) {
-    //     const userId = req.params.id
-    //     basketService.getBasketList(userId).then((allBasket: Basket[]) => {
-    //         res.status(200).json({
-    //             status_code: 1,
-    //             message: "Operation Completed",
-    //             data: allBasket
-    //         })
-    //     }).catch((err: Error) => {
-    //         next(err)
-    //     })
-    // }
-    // getUserFromBasketUrl(req: express.Request, res: express.Response, next: express.NextFunction) {
-    //     const userId: BasketDetail = {id: req.params.id}
-    //     schemas.default.detail.validateAsync(userId).then((validatedUserId: BasketDetail) => {
-    //         basketService.getUserFromBasketUrl(validatedUserId.id).then((user) => {
-    //         }).catch((err: Error) => {
-    //             next(err)
-    //         })
-    //     }).catch((err: Error) => {
-    //         next(err)
-    //     })
-    // }
     routes() {
         this.router.post("/user/:id/basket", this.addToBasket.bind(this));
         this.router.delete("/user/:id/basket", this.deleteFromBasket.bind(this));
-        // this.router.get("/basket", this.getBasketList.bind(this))
     }
 }
 const basketController = new BasketController();

@@ -17,12 +17,17 @@ class UserService {
   }
 
   createUser(user: User): Promise<User> {
-    return new Promise((resolve, reject) => {
-      userRepository.createUser(user).then((resultValue: User) => {
-        resolve(resultValue)
+    return new Promise((resolve, rejects) => {
+      userRepository.getUserByEmail(user.email).then((userFromDB: User) => {
+        userRepository.createUser(user).then((resultValue: User) => {
+          resolve(resultValue)
+        }).catch((err: Error) => {
+          rejects(err)
+        })
       }).catch((err: Error) => {
-        reject(err)
+        rejects(err)
       })
+
     });
   }
 
@@ -36,23 +41,32 @@ class UserService {
     });
   }
 
-  updateUser(userUpdateData: User, userId: UserDetail): Promise<User> {
+  updateUser(userUpdateData: User, userId: string): Promise<User> {
     return new Promise(async (resolve, rejects) => {
-        userRepository.updateUser(userUpdateData, userId.id).then((updatedUser) => {
+      userRepository.getUser(userId).then((user: User[]) => {
+        userRepository.updateUser(userUpdateData, userId).then((updatedUser) => {
           resolve(updatedUser)
         }).catch((err: Error) => {
           rejects(err)
         })
+      }).catch((err: Error) => {
+        rejects(err)
+      })
     });
   }
 
   deleteUser(userId: string): Promise<User> {
     return new Promise((resolve, rejects) => {
+      userRepository.getUser(userId).then((user: User[]) => {
         userRepository.deleteUser(userId).then((deletedUser: User) => {
           resolve(deletedUser)
         }).catch((err: Error) => {
           rejects(err)
         })
+      }).catch((err: Error) => {
+        rejects(err)
+      })
+        
     })
   }
 }

@@ -1,6 +1,4 @@
-import { rejects } from "assert";
 import Product from "../interface/IProduct";
-import ProductDetail from "../interface/RequestProductDetail";
 import productRepository from "../repository/productRepository";
 
 class ProductService {
@@ -37,11 +35,16 @@ class ProductService {
 
     deleteProduct(productId: string): Promise<Product> {
         return new Promise((resolve, rejects) => {
-            productRepository.deleteProduct(productId).then((deletedProduct: Product) => {
-                resolve(deletedProduct)
+            productRepository.getProductById(productId).then((resFromDB) => {
+                productRepository.deleteProduct(productId).then((deletedProduct: Product) => {
+                    resolve(deletedProduct)
+                }).catch((err: Error) => {
+                    rejects(err)
+                })
             }).catch((err: Error) => {
                 rejects(err)
             })
+          
         })
     }
 }
