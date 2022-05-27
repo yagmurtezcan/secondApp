@@ -6,7 +6,7 @@ class UserRepository {
         return new Promise(async (resolve, reject) => {
             await knexDB.db("user")
                 .select("*")
-                .then((res: any) => {
+                .then((res: User[]) => {
                     const user = res;
                     resolve(user);
                 }).catch((err: Error) => {
@@ -20,7 +20,7 @@ class UserRepository {
             await knexDB.db("user")
                 .select("*")
                 .where("id", userId)
-                .then((res: any) => {
+                .then((res: User[]) => {
                     const user = res;
                     if(user.length > 0){
                         resolve(user)
@@ -33,12 +33,12 @@ class UserRepository {
         })
     }
 
-    getUserByEmail(email: string): Promise<User> {
+    getUserByEmail(email: string): Promise<User[]> {
         return new Promise(async (resolve, rejects) => {
             await knexDB.db("user")
                 .select("*")
                 .where("email", email)
-                .then((res: any) => {
+                .then((res: User[]) => {
                     if(res.length == 0){
                         resolve(res)
                     }else{
@@ -50,12 +50,12 @@ class UserRepository {
         })
     }
 
-    createUser(user: User): Promise<User> {
+    createUser(user: User): Promise<User[]> {
         return new Promise((resolve,rejects) => {
                  knexDB.db("user")
                 .insert(user)
                 .returning("*")
-                .then((res: any) => {
+                .then((res: User[]) => {
                     const user = res
                     resolve(user)
                 }).catch((err: Error) => {
@@ -64,13 +64,13 @@ class UserRepository {
         })
     }
 
-    updateUser(userUpdateData: User, userId: string): Promise<User> {
+    updateUser(userUpdateData: User, userId: string): Promise<User[]> {
         return new Promise((resolve, rejects) => {
             knexDB.db("user")
             .update(userUpdateData)
             .returning("*")
             .where("id", userId)
-            .then((res: any) => {
+            .then((res: User[]) => {
                 const user = res
                 resolve(user)
             }).catch((err: Error) => {
@@ -79,12 +79,12 @@ class UserRepository {
         })
     }
 
-    deleteUser(userId: string): Promise<User> {
+    deleteUser(userId: string): Promise<number> {
         return new Promise((resolve, rejects) => {
                  knexDB.db("user")
                 .where("id", userId)
                 .del()
-                .then((res: any) => {
+                .then((res: number) => {
                     resolve(res)
                 }).catch((err: Error) => {
                     rejects(err)

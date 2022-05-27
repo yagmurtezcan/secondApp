@@ -2,11 +2,11 @@ import knexDB from "../db/knex";
 import Product from "../interface/IProduct";
 
 class ProductRepository {
-    getAllProduct(): Promise<Product> {
+    getAllProduct(): Promise<Product[]> {
         return new Promise((resolve, rejects) => {
             knexDB.db("product")
                 .select("*")
-                .then((res: any) => {
+                .then((res: Product[]) => {
                     const product = res
                     resolve(product)
                 }).catch((err: Error) => {
@@ -15,12 +15,12 @@ class ProductRepository {
         })
     }
 
-    createProduct(product: Product): Promise<Product> {
+    createProduct(product: Product): Promise<Product[]> {
         return new Promise((resolve, rejects) => {
             knexDB.db("product")
                 .insert(product)
                 .returning("*")
-                .then((res: any) => {
+                .then((res: Product[]) => {
                     const product = res
                     resolve(product)
                 }).catch((err: Error) => {
@@ -29,12 +29,12 @@ class ProductRepository {
         })
     }
 
-    getProductById(productId: string): Promise<Product> {
+    getProductById(productId: string): Promise<Product[]> {
         return new Promise((resolve, rejects) => {
             knexDB.db("product")
                 .select("*")
                 .where("id", productId)
-                .then((res: any) => {
+                .then((res: Product[]) => {
                     const product = res
                     if(product.length > 0){
                         resolve(product)
@@ -48,12 +48,12 @@ class ProductRepository {
         })
     }
 
-    deleteProduct(productId: string): Promise<Product> {
+    deleteProduct(productId: string): Promise<number> {
         return new Promise((resolve, rejects) => {
                 knexDB.db("product")
                     .where("id", productId)
                     .del()
-                    .then((res: any) => {
+                    .then((res: number) => {
                         resolve(res)
                     }).catch((err: Error) => {
                         rejects(err)

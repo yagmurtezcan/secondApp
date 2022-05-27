@@ -1,5 +1,4 @@
 import User from "../interface/IUser";
-import UserDetail from "../interface/RequestUserDetail";
 import userRepository from "../repository/userRepository";
 
 class UserService {
@@ -16,10 +15,10 @@ class UserService {
     })
   }
 
-  createUser(user: User): Promise<User> {
+  createUser(user: User): Promise<User[]> {
     return new Promise((resolve, rejects) => {
-      userRepository.getUserByEmail(user.email).then((userFromDB: User) => {
-        userRepository.createUser(user).then((resultValue: User) => {
+      userRepository.getUserByEmail(user.email).then((userFromDB: User[]) => {
+        userRepository.createUser(user).then((resultValue: User[]) => {
           resolve(resultValue)
         }).catch((err: Error) => {
           rejects(err)
@@ -31,20 +30,20 @@ class UserService {
     });
   }
 
-  getUser(userId: string): Promise<User> {
+  getUser(userId: string): Promise<User[]> {
     return new Promise((resolve, rejects) => {
       userRepository.getUser(userId).then((user: User[]) => {
-          resolve(user[0])
+          resolve(user)
       }).catch((err: Error) => {
         rejects(err)
       })
     });
   }
 
-  updateUser(userUpdateData: User, userId: string): Promise<User> {
+  updateUser(userUpdateData: User, userId: string): Promise<User[]> {
     return new Promise(async (resolve, rejects) => {
       userRepository.getUser(userId).then((user: User[]) => {
-        userRepository.updateUser(userUpdateData, userId).then((updatedUser) => {
+        userRepository.updateUser(userUpdateData, userId).then((updatedUser: User[]) => {
           resolve(updatedUser)
         }).catch((err: Error) => {
           rejects(err)
@@ -55,10 +54,10 @@ class UserService {
     });
   }
 
-  deleteUser(userId: string): Promise<User> {
+  deleteUser(userId: string): Promise<number> {
     return new Promise((resolve, rejects) => {
       userRepository.getUser(userId).then((user: User[]) => {
-        userRepository.deleteUser(userId).then((deletedUser: User) => {
+        userRepository.deleteUser(userId).then((deletedUser: number) => {
           resolve(deletedUser)
         }).catch((err: Error) => {
           rejects(err)

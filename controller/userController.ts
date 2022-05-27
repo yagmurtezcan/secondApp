@@ -29,7 +29,7 @@ class UserController implements IRouterBase {
     const user: User = req.body;
 
     schemas.default.create.validateAsync(user).then((resultValue: User) => {
-      userService.createUser(resultValue).then((response: User) => {
+      userService.createUser(resultValue).then((response: User[]) => {
             return res.status(200).json({
               status_code: 1,
               message: "Operation Completed",
@@ -47,7 +47,7 @@ class UserController implements IRouterBase {
     const userInfo: UserDetail = {id: req.params.id}
 
     schemas.default.detail.validateAsync(userInfo).then((userId: UserDetail) => {
-      userService.getUser(userId.id).then((response: User) => {
+      userService.getUser(userId.id).then((response: User[]) => {
         return res.status(200).json({
           status_code: 1,
           message: "Operation Completed",
@@ -66,7 +66,7 @@ class UserController implements IRouterBase {
 
     schemas.default.detail.validateAsync(userInfo).then((userId: UserDetail) =>{
       let updateReqUser: User = req.body;
-      userService.updateUser(updateReqUser, userId.id).then((user: User) => {
+      userService.updateUser(updateReqUser, userId.id).then((user: User[]) => {
         res.status(200).json({
           status_code: 1,
           message: "Operation Completed",
@@ -84,7 +84,7 @@ class UserController implements IRouterBase {
     const userInfo: UserDetail = {id: req.params.id}
 
     schemas.default.detail.validateAsync(userInfo).then((userId: UserDetail) => {
-      userService.deleteUser(userId.id).then((response: User) => {
+      userService.deleteUser(userId.id).then((response: number) => {
         return res.status(200).json({
           status_code: 1,
           message: "Operation Completed"

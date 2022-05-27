@@ -5,7 +5,7 @@ import basketRepository from "../repository/basketRepository"
 import userRepository from "../repository/userRepository"
 
 class BasketService {
-    addToBasket(basketBody: Basket, userId: string): Promise<Basket> {  
+    addToBasket(basketBody: Basket, userId: string): Promise<Basket[]> {  
         return new Promise((resolve, rejects) => {
             userRepository.getUser(userId).then((user: User[]) => {
 
@@ -23,14 +23,14 @@ class BasketService {
                     if(foundProduct == undefined) {
                         basketBody.product_name = product[0].product_name
                         basketBody.user_id = user[0].id
-                        basketRepository.addToBasket(basketBody).then((basketFromRepository: Basket) => {
+                        basketRepository.addToBasket(basketBody).then((basketFromRepository: Basket[]) => {
                             resolve(basketFromRepository)
                         }).catch((err: Error) => {
                             rejects(err)
                         })
                     }else {
                         const newQuantity = foundProduct.quantity + basketBody.quantity 
-                        basketRepository.updateQuantityById(foundProduct.id, newQuantity).then((repQuantity: Basket) => {
+                        basketRepository.updateQuantityById(foundProduct.id, newQuantity).then((repQuantity: Basket[]) => {
                             resolve(repQuantity)
                         }).catch((err: Error) => {
                             rejects(err)
@@ -48,7 +48,7 @@ class BasketService {
     })
     }
 
-    deleteFromBasket(): Promise<Basket> {
+    deleteFromBasket(): Promise<Basket[]> {
         return new Promise((resolve, rejects) => {
 
         })
@@ -56,8 +56,8 @@ class BasketService {
 
     getBasketList(userId: string): Promise<Basket[]> {
         return new Promise((resolve, rejects) => {
-            basketRepository.getBasketList(userId).then((userIdFromRepository: Basket[]) => {
-                resolve(userIdFromRepository)
+            basketRepository.getBasketList(userId).then((userIdProductMatches: Basket[]) => {
+                resolve(userIdProductMatches)
             }).catch((err: Error) => {
                 rejects(err)
             })

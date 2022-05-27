@@ -34,8 +34,12 @@ class ProductService {
     }
     deleteProduct(productId) {
         return new Promise((resolve, rejects) => {
-            productRepository_1.default.deleteProduct(productId).then((deletedProduct) => {
-                resolve(deletedProduct);
+            productRepository_1.default.getProductById(productId).then((resFromDB) => {
+                productRepository_1.default.deleteProduct(productId).then((deletedProduct) => {
+                    resolve(deletedProduct);
+                }).catch((err) => {
+                    rejects(err);
+                });
             }).catch((err) => {
                 rejects(err);
             });

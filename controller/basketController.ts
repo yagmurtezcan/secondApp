@@ -20,7 +20,7 @@ class BasketController implements IRouterBase{
 
         schemas.default.detail.validateAsync(userId).then((validatedId: BasketDetail) => {
             schemas.default.add.validateAsync(basket).then((validatedBasketBody: Basket) => {
-                basketService.addToBasket(validatedBasketBody, validatedId.id).then((basketFromService: Basket) => {
+                basketService.addToBasket(validatedBasketBody, validatedId.id).then((basketFromService: Basket[]) => {
                     res.status(200).json({
                         status_code: 1,
                         message: "Operation Completed",

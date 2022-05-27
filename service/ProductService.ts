@@ -2,9 +2,9 @@ import Product from "../interface/IProduct";
 import productRepository from "../repository/productRepository";
 
 class ProductService {
-    getAllProduct(): Promise<Product> {
+    getAllProduct(): Promise<Product[]> {
         return new Promise((resolve, rejects) => {
-            productRepository.getAllProduct().then((productFromRepository: Product) => {
+            productRepository.getAllProduct().then((productFromRepository: Product[]) => {
                 resolve(productFromRepository)
             }).catch((err: Error) => {
                 rejects(err)
@@ -12,9 +12,9 @@ class ProductService {
         })
     }
 
-    getProductById(productId: string): Promise<Product> {
+    getProductById(productId: string): Promise<Product[]> {
         return new Promise((resolve, rejects) => {
-            productRepository.getProductById(productId).then((existProduct: Product) => {
+            productRepository.getProductById(productId).then((existProduct: Product[]) => {
                 resolve(existProduct)
             }).catch((err: Error) => {
                 rejects(err)
@@ -22,9 +22,9 @@ class ProductService {
         })
     }
 
-    createProduct(product: Product): Promise<Product> {
+    createProduct(product: Product): Promise<Product[]> {
         return new Promise((resolve, rejects) => {
-            productRepository.createProduct(product).then((productFromRepository: Product) => {
+            productRepository.createProduct(product).then((productFromRepository: Product[]) => {
                 resolve(productFromRepository)
             }).catch((err: Error) => {
                 rejects(err)
@@ -33,10 +33,10 @@ class ProductService {
         })
     }
 
-    deleteProduct(productId: string): Promise<Product> {
+    deleteProduct(productId: string): Promise<number> {
         return new Promise((resolve, rejects) => {
             productRepository.getProductById(productId).then((resFromDB) => {
-                productRepository.deleteProduct(productId).then((deletedProduct: Product) => {
+                productRepository.deleteProduct(productId).then((deletedProduct: number) => {
                     resolve(deletedProduct)
                 }).catch((err: Error) => {
                     rejects(err)

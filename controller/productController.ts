@@ -15,7 +15,7 @@ class ProductController implements IRouterBase {
 
 
     getAllProduct(req: express.Request, res: express.Response, next: express.NextFunction) {
-        productService.getAllProduct().then((productFromService: Product) => {
+        productService.getAllProduct().then((productFromService: Product[]) => {
             res.status(200).json({
                 status_code: 1,
                 message: "Operation Completed",
@@ -30,7 +30,7 @@ class ProductController implements IRouterBase {
         const productInfo: ProductDetail = {id: req.params.id}
         
         schemas.default.detail.validateAsync(productInfo).then((validatedId: ProductDetail) => {
-            productService.getProductById(validatedId.id).then((product: Product) => {
+            productService.getProductById(validatedId.id).then((product: Product[]) => {
                 res.status(200).json({
                     status_code: 1,
                     message: "Operation Completed",
@@ -48,7 +48,7 @@ class ProductController implements IRouterBase {
         const product: Product = req.body
 
         schemas.default.create.validateAsync(product).then((validatedProduct: Product) => {
-            productService.createProduct(validatedProduct).then((productFromService: Product) => {
+            productService.createProduct(validatedProduct).then((productFromService: Product[]) => {
                 res.status(200).json({
                     status_code: 1,
                     message: "Operation Completed",
@@ -67,7 +67,7 @@ class ProductController implements IRouterBase {
         const productInfo: ProductDetail = {id: req.params.id}
  
         schemas.default.detail.validateAsync(productInfo).then((validatedId: ProductDetail) => {
-            productService.deleteProduct(validatedId.id).then((productFromService: Product) => {
+            productService.deleteProduct(validatedId.id).then((productFromService: number) => {
                 res.status(200).json({
                     status_code: 1,
                     message: "Operation Completed"

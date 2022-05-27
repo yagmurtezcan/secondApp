@@ -50,15 +50,11 @@ class ProductRepository {
     }
     deleteProduct(productId) {
         return new Promise((resolve, rejects) => {
-            productRepository.getProductById(productId).then((resFromgetId) => {
-                knex_1.default.db("product")
-                    .where("id", productId)
-                    .del()
-                    .then((res) => {
-                    resolve(res);
-                }).catch((err) => {
-                    rejects(err);
-                });
+            knex_1.default.db("product")
+                .where("id", productId)
+                .del()
+                .then((res) => {
+                resolve(res);
             }).catch((err) => {
                 rejects(err);
             });
