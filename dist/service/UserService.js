@@ -37,7 +37,7 @@ class UserService {
     getUser(userId) {
         return new Promise((resolve, rejects) => {
             userRepository_1.default.getUser(userId).then((user) => {
-                resolve(user);
+                resolve(user[0]);
             }).catch((err) => {
                 rejects(err);
             });

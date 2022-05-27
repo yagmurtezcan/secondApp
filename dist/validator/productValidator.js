@@ -2,8 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Joi = require("joi");
 const schemas = {
+    detail: Joi.object().keys({
+        id: Joi.string().required()
+    }).options({ abortEarly: false }),
     create: Joi.object().keys({
-        id: Joi.number().integer().required(),
+        id: Joi.string(),
         product_name: Joi.string().min(2).max(100).trim().required(),
         product_price: Joi.number().integer().required(),
         product_quantity: Joi.number().integer().required(),

@@ -24,7 +24,7 @@ class BasketController implements IRouterBase{
                     res.status(200).json({
                         status_code: 1,
                         message: "Operation Completed",
-                        data: basketFromService
+                        // data: basketFromService
                     })
                 }).catch((err: Error) => {
                     next(err)
@@ -42,34 +42,20 @@ class BasketController implements IRouterBase{
     deleteFromBasket(req: express.Request, res: express.Response, next: express.NextFunction) {
         const userId: BasketDetail = {id: req.params.id}
 
-        schemas.default.detail.validateAsync(userId).then((validatedUserId: BasketDetail) => {
-            basketService.getUserFromBasketUrl(validatedUserId.id).then((user) => {
+        // schemas.default.detail.validateAsync(userId).then((validatedUserId: BasketDetail) => {
+        //     basketService.getUserFromBasketUrl(validatedUserId.id).then((user) => {
                 
-            }).catch((err: Error) => {
-                next(err)
-            })
-        }).catch((err: Error) => {
-            next(err)
-        })
-    }
-
-    getUserFromBasketUrl(req: express.Request, res: express.Response, next: express.NextFunction) {
-        const userId: BasketDetail = {id: req.params.id}
-
-        schemas.default.detail.validateAsync(userId).then((validatedUserId: BasketDetail) => {
-            basketService.getUserFromBasketUrl(validatedUserId.id).then((user) => {
-                
-            }).catch((err: Error) => {
-                next(err)
-            })
-        }).catch((err: Error) => {
-            next(err)
-        })
+        //     }).catch((err: Error) => {
+        //         next(err)
+        //     })
+        // }).catch((err: Error) => {
+        //     next(err)
+        // })
     }
 
     routes() {
-        this.router.post("/:id/basket", this.addToBasket.bind(this))
-        this.router.delete("/:id/basket", this.deleteFromBasket.bind(this))
+        this.router.post("/user/:id/basket", this.addToBasket.bind(this))
+        this.router.delete("/user/:id/basket", this.deleteFromBasket.bind(this))
     }
 }
 

@@ -7,6 +7,20 @@ const productRepository_1 = __importDefault(require("../repository/productReposi
 class ProductService {
     getAllProduct() {
         return new Promise((resolve, rejects) => {
+            productRepository_1.default.getAllProduct().then((productFromRepository) => {
+                resolve(productFromRepository);
+            }).catch((err) => {
+                rejects(err);
+            });
+        });
+    }
+    getProductById(productId) {
+        return new Promise((resolve, rejects) => {
+            productRepository_1.default.getProductById(productId).then((existProduct) => {
+                resolve(existProduct);
+            }).catch((err) => {
+                rejects(err);
+            });
         });
     }
     createProduct(product) {
@@ -18,8 +32,13 @@ class ProductService {
             });
         });
     }
-    deleteProduct() {
+    deleteProduct(productId) {
         return new Promise((resolve, rejects) => {
+            productRepository_1.default.deleteProduct(productId).then((deletedProduct) => {
+                resolve(deletedProduct);
+            }).catch((err) => {
+                rejects(err);
+            });
         });
     }
 }

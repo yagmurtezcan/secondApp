@@ -15,7 +15,7 @@ class UserRepository {
         });
     }
 
-    getUser(userId: string): Promise<User> {
+    getUser(userId: string): Promise<User[]> {
         return new Promise(async (resolve, rejects) => {
             await knexDB.db("user")
                 .select("*")
@@ -70,7 +70,7 @@ class UserRepository {
 
     updateUser(userUpdateData: User, userId: string): Promise<User> {
         return new Promise((resolve, rejects) => {
-            userRepository.getUser(userId).then((user: User) => {
+            userRepository.getUser(userId).then((user: User[]) => {
                     knexDB.db("user")
                     .update(userUpdateData)
                     .returning("*")
@@ -89,7 +89,7 @@ class UserRepository {
 
     deleteUser(userId: string): Promise<User> {
         return new Promise((resolve, rejects) => {
-            userRepository.getUser(userId).then((user: User) => {
+            userRepository.getUser(userId).then((user: User[]) => {
                  knexDB.db("user")
                 .where("id", userId)
                 .del()

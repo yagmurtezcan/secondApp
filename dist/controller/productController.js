@@ -35,6 +35,31 @@ class ProductController {
         this.routes();
     }
     getAllProduct(req, res, next) {
+        ProductService_1.default.getAllProduct().then((productFromService) => {
+            res.status(200).json({
+                status_code: 1,
+                message: "Operation Completed",
+                data: productFromService
+            });
+        }).catch((err) => {
+            next(err);
+        });
+    }
+    getProductById(req, res, next) {
+        const productInfo = { id: req.params.id };
+        schemas.default.detail.validateAsync(productInfo).then((validatedId) => {
+            ProductService_1.default.getProductById(validatedId.id).then((product) => {
+                res.status(200).json({
+                    status_code: 1,
+                    message: "Operation Completed",
+                    data: product
+                });
+            }).catch((err) => {
+                next(err);
+            });
+        }).catch((err) => {
+            next(err);
+        });
     }
     createProduct(req, res, next) {
         const product = req.body;
@@ -53,9 +78,23 @@ class ProductController {
         });
     }
     deleteProduct(req, res, next) {
+        const productInfo = { id: req.params.id };
+        schemas.default.detail.validateAsync(productInfo).then((validatedId) => {
+            ProductService_1.default.deleteProduct(validatedId.id).then((productFromService) => {
+                res.status(200).json({
+                    status_code: 1,
+                    message: "Operation Completed"
+                });
+            }).catch((err) => {
+                next(err);
+            });
+        }).catch((err) => {
+            next(err);
+        });
     }
     routes() {
         this.router.get("/", this.getAllProduct.bind(this));
+        this.router.get("/:id", this.getProductById.bind(this));
         this.router.post("/", this.createProduct.bind(this));
         this.router.delete("/:id", this.deleteProduct.bind(this));
     }

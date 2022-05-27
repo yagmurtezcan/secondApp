@@ -7,7 +7,7 @@ const schemas = {
 
     add: Joi.object().keys({
         product_id: Joi.number().integer().required(),
-        quantity: Joi.number().integer().required()
+        quantity: Joi.number().integer().required(),
     }).options({abortEarly: false})
 }
 

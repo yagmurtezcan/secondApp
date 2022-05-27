@@ -26,7 +26,7 @@ export class YApp {
     this.app.use("/", this.appRouter);
     this.appRouter.use("/user", userController);
     this.appRouter.use("/product", productController);
-    this.appRouter.use("/user", basketController)
+    this.appRouter.use("/", basketController)
 
     this.server = http.createServer(this.app);
     this.server.on("error", (err: Error)=> {

@@ -28,8 +28,8 @@ class UserService {
 
   getUser(userId: string): Promise<User> {
     return new Promise((resolve, rejects) => {
-      userRepository.getUser(userId).then((user: User) => {
-          resolve(user)
+      userRepository.getUser(userId).then((user: User[]) => {
+          resolve(user[0])
       }).catch((err: Error) => {
         rejects(err)
       })
