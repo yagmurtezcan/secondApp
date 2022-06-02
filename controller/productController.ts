@@ -27,7 +27,7 @@ class ProductController implements IRouterBase {
     }
 
     getProductById(req: express.Request, res: express.Response, next: express.NextFunction) {
-        const productInfo: ProductDetail = {id: req.params.id}
+        const productInfo = {id: req.params.id}
         
         schemas.default.detail.validateAsync(productInfo).then((validatedId: ProductDetail) => {
             productService.getProductById(validatedId.id).then((product: Product[]) => {
@@ -64,8 +64,8 @@ class ProductController implements IRouterBase {
     }
 
     deleteProduct(req: express.Request, res: express.Response, next: express.NextFunction){
-        const productInfo: ProductDetail = {id: req.params.id}
- 
+        const productInfo = {id: req.params.id}
+    
         schemas.default.detail.validateAsync(productInfo).then((validatedId: ProductDetail) => {
             productService.deleteProduct(validatedId.id).then((productFromService: number) => {
                 res.status(200).json({

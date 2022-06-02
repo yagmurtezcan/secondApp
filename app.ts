@@ -1,6 +1,7 @@
 import express from "express"
 import * as http from "http";
 import basketController from "./controller/basketController";
+import loginController from "./controller/loginController";
 import productController from "./controller/productController";
 import userController from "./controller/userController";
 import knexDB from "./db/knex";
@@ -26,7 +27,8 @@ export class YApp {
     this.app.use("/", this.appRouter);
     this.appRouter.use("/user", userController);
     this.appRouter.use("/product", productController);
-    this.appRouter.use("/", basketController)
+    this.appRouter.use("/", basketController);
+    this.appRouter.use("/login", loginController)
 
     this.server = http.createServer(this.app);
     this.server.on("error", (err: Error)=> {

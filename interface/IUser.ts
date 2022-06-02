@@ -4,5 +4,6 @@ export default interface User {
   email: string;
   age: number;
   id: string;
-  isActive: boolean
+  isActive: boolean;
+  password: string
 }

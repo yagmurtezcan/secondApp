@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const userRepository_1 = __importDefault(require("../repository/userRepository"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 class UserService {
     getAllUser() {
         return new Promise((resolve, rejects) => {
@@ -26,17 +27,20 @@ class UserService {
         });
     }
     createUser(user) {
-        return new Promise((resolve, rejects) => {
-            userRepository_1.default.getUserByEmail(user.email).then((userFromDB) => {
+        return new Promise((resolve, rejects) => __awaiter(this, void 0, void 0, function* () {
+            userRepository_1.default.getUserByEmail(user.email).then((userFromDB) => __awaiter(this, void 0, void 0, function* () {
+                const salt = yield bcrypt_1.default.genSalt(10);
+                const hashedPassword = yield bcrypt_1.default.hash(user.password, salt);
+                user.password = hashedPassword;
                 userRepository_1.default.createUser(user).then((resultValue) => {
                     resolve(resultValue);
                 }).catch((err) => {
                     rejects(err);
                 });
-            }).catch((err) => {
+            })).catch((err) => {
                 rejects(err);
             });
-        });
+        }));
     }
     getUser(userId) {
         return new Promise((resolve, rejects) => {

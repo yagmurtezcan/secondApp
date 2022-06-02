@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const basketRepository_1 = __importDefault(require("../repository/basketRepository"));
+const productRepository_1 = __importDefault(require("../repository/productRepository"));
 const userRepository_1 = __importDefault(require("../repository/userRepository"));
 class BasketService {
     addToBasket(basketBody, userId) {
@@ -11,6 +12,8 @@ class BasketService {
             userRepository_1.default.getUser(userId).then((user) => {
                 basketRepository_1.default.checkProductStock(basketBody.quantity, basketBody.product_id).then((product) => {
                     this.getBasketList(user[0].id).then((basketList) => {
+                        productRepository_1.default.getProductById(basketBody.product_id).then((productfrom) => {
+                        });
                         let basketCount = basketList.length;
                         let foundProduct = undefined;
                         if (basketCount > 0) {
@@ -27,6 +30,7 @@ class BasketService {
                         }
                         else {
                             const newQuantity = foundProduct.quantity + basketBody.quantity;
+                            const totalPrice = (foundProduct.unit_price) * foundProduct.quantity;
                             basketRepository_1.default.updateQuantityById(foundProduct.id, newQuantity).then((repQuantity) => {
                                 resolve(repQuantity);
                             }).catch((err) => {
@@ -50,8 +54,8 @@ class BasketService {
     }
     getBasketList(userId) {
         return new Promise((resolve, rejects) => {
-            basketRepository_1.default.getBasketList(userId).then((userIdFromRepository) => {
-                resolve(userIdFromRepository);
+            basketRepository_1.default.getBasketList(userId).then((userIdProductMatches) => {
+                resolve(userIdProductMatches);
             }).catch((err) => {
                 rejects(err);
             });

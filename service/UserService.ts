@@ -1,5 +1,6 @@
 import User from "../interface/IUser";
 import userRepository from "../repository/userRepository";
+import bcrypt from "bcrypt"
 
 class UserService {
 
@@ -16,8 +17,13 @@ class UserService {
   }
 
   createUser(user: User): Promise<User[]> {
-    return new Promise((resolve, rejects) => {
-      userRepository.getUserByEmail(user.email).then((userFromDB: User[]) => {
+    return new Promise(async (resolve, rejects) => {
+      userRepository.getUserByEmail(user.email).then(async (userFromDB: User[]) => {
+
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(user.password, salt)
+        user.password = hashedPassword
+
         userRepository.createUser(user).then((resultValue: User[]) => {
           resolve(resultValue)
         }).catch((err: Error) => {
@@ -68,6 +74,7 @@ class UserService {
         
     })
   }
+  
 }
 
 const userService = new UserService();

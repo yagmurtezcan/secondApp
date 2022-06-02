@@ -31,6 +31,7 @@ const BasketService_1 = __importDefault(require("../service/BasketService"));
 const schemas = __importStar(require("../validator/basketValidator"));
 class BasketController {
     constructor() {
+        [];
         this.router = express_1.default.Router();
         this.routes();
     }

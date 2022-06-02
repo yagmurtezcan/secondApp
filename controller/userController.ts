@@ -4,6 +4,7 @@ import userService from "../service/UserService";
 import * as schemas from "../validator/userValidator";
 import User from "../interface/IUser";
 import UserDetail from "../interface/RequestUserDetail";
+import checkAuth from "../middleware/checkAuth"
 
 class UserController implements IRouterBase {
   router: express.Router;
@@ -98,7 +99,7 @@ class UserController implements IRouterBase {
   }
 
   routes() {
-    this.router.get("/", this.getAllUser.bind(this));
+    this.router.get("/", checkAuth, this.getAllUser.bind(this));
     this.router.post("/", this.createUser.bind(this));
     this.router.get("/:id", this.getUser.bind(this));
     this.router.put("/:id", this.updateUser.bind(this));

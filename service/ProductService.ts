@@ -12,7 +12,7 @@ class ProductService {
         })
     }
 
-    getProductById(productId: string): Promise<Product[]> {
+    getProductById(productId: number): Promise<Product[]> {
         return new Promise((resolve, rejects) => {
             productRepository.getProductById(productId).then((existProduct: Product[]) => {
                 resolve(existProduct)
@@ -33,7 +33,7 @@ class ProductService {
         })
     }
 
-    deleteProduct(productId: string): Promise<number> {
+    deleteProduct(productId: number): Promise<number> {
         return new Promise((resolve, rejects) => {
             productRepository.getProductById(productId).then((resFromDB) => {
                 productRepository.deleteProduct(productId).then((deletedProduct: number) => {

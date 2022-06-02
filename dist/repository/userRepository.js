@@ -61,6 +61,20 @@ class UserRepository {
             });
         }));
     }
+    getLoginUser(email) {
+        return new Promise((resolve, rejects) => {
+            knex_1.default.db("user")
+                .select("*")
+                .first()
+                .where("email", email)
+                .where("isActive", true)
+                .then((res) => {
+                resolve(res);
+            }).catch((err) => {
+                rejects(err);
+            });
+        });
+    }
     createUser(user) {
         return new Promise((resolve, rejects) => {
             knex_1.default.db("user")
@@ -93,6 +107,20 @@ class UserRepository {
             knex_1.default.db("user")
                 .where("id", userId)
                 .del()
+                .then((res) => {
+                resolve(res);
+            }).catch((err) => {
+                rejects(err);
+            });
+        });
+    }
+    checkUserActivity(userId) {
+        return new Promise((resolve, rejects) => {
+            knex_1.default.db("user")
+                .select("*")
+                .first()
+                .where("id", userId)
+                .where("isActive", true)
                 .then((res) => {
                 resolve(res);
             }).catch((err) => {

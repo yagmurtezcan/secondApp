@@ -50,6 +50,21 @@ class UserRepository {
         })
     }
 
+    getLoginUser(email: string): Promise<User> {
+        return new Promise((resolve, rejects) => {
+            knexDB.db("user")
+                .select("*")
+                .first()
+                .where("email", email)
+                .where("isActive", true)
+                .then((res: User) => {
+                    resolve(res)
+                }).catch((err: Error) => {
+                    rejects(err)
+                })
+        })
+    }
+
     createUser(user: User): Promise<User[]> {
         return new Promise((resolve,rejects) => {
                  knexDB.db("user")
@@ -89,6 +104,22 @@ class UserRepository {
                 }).catch((err: Error) => {
                     rejects(err)
                 })
+        })
+    }
+
+    checkUserActivity(userId: User): Promise<User> {
+        return new Promise((resolve, rejects) => {
+            knexDB.db("user")
+                .select("*")
+                .first()
+                .where("id", userId)
+                .where("isActive", true)
+                .then((res: User) => {
+                    resolve(res)
+                }).catch((err: Error) => {
+                    rejects(err)
+                })
+                
         })
     }
       

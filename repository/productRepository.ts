@@ -29,7 +29,7 @@ class ProductRepository {
         })
     }
 
-    getProductById(productId: string): Promise<Product[]> {
+    getProductById(productId: number): Promise<Product[]> {
         return new Promise((resolve, rejects) => {
             knexDB.db("product")
                 .select("*")
@@ -48,7 +48,7 @@ class ProductRepository {
         })
     }
 
-    deleteProduct(productId: string): Promise<number> {
+    deleteProduct(productId: number): Promise<number> {
         return new Promise((resolve, rejects) => {
                 knexDB.db("product")
                     .where("id", productId)
@@ -60,6 +60,7 @@ class ProductRepository {
                     })
         })
     }
+
 }
 
 const productRepository = new ProductRepository()

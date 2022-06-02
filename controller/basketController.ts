@@ -8,7 +8,7 @@ import * as schemas from "../validator/basketValidator"
 class BasketController implements IRouterBase{
     router: express.Router
 
-    constructor() {
+    constructor() {[]
         this.router = express.Router()
         this.routes()
     }
