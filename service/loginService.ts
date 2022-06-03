@@ -17,7 +17,9 @@ class LoginService {
                         rejects("Email or password is not correct")
                     } else {
                         const token = jwt.sign({
-                            
+                            id: user.id,
+                            email: user.email,
+                            isActive: user.isActive
                         },
                         config.secret_key,
                         {

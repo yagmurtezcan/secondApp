@@ -107,12 +107,12 @@ class UserRepository {
         })
     }
 
-    checkUserActivity(userId: User): Promise<User> {
+    checkUserActivity(userEmail: User): Promise<User> {
         return new Promise((resolve, rejects) => {
             knexDB.db("user")
                 .select("*")
                 .first()
-                .where("id", userId)
+                .where("email", userEmail)
                 .where("isActive", true)
                 .then((res: User) => {
                     resolve(res)

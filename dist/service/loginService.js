@@ -20,7 +20,11 @@ class LoginService {
                         rejects("Email or password is not correct");
                     }
                     else {
-                        const token = jsonwebtoken_1.default.sign({}, config_1.default.secret_key, {
+                        const token = jsonwebtoken_1.default.sign({
+                            id: user.id,
+                            email: user.email,
+                            isActive: user.isActive
+                        }, config_1.default.secret_key, {
                             expiresIn: "2h"
                         });
                         resolve(token);
