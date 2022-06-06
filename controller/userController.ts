@@ -5,6 +5,7 @@ import * as schemas from "../validator/userValidator";
 import User from "../interface/IUser";
 import UserDetail from "../interface/RequestUserDetail";
 import checkAuth from "../middleware/checkAuth"
+import upload from "../middleware/uploadProfilePhoto";
 
 class UserController implements IRouterBase {
   router: express.Router;
@@ -28,9 +29,10 @@ class UserController implements IRouterBase {
 
   createUser(req: express.Request, res: express.Response, next: express.NextFunction) {
     const user: User = req.body;
+    const fileName = req.file;
 
     schemas.default.create.validateAsync(user).then((resultValue: User) => {
-      userService.createUser(resultValue).then((response: User[]) => {
+      userService.createUser(resultValue, fileName).then((response: User[]) => {
             return res.status(200).json({
               status_code: 1,
               message: "Operation Completed",
@@ -100,7 +102,7 @@ class UserController implements IRouterBase {
 
   routes() {
     this.router.get("/", checkAuth, this.getAllUser.bind(this));
-    this.router.post("/", this.createUser.bind(this));
+    this.router.post("/", upload.single("image"), this.createUser.bind(this));
     this.router.get("/:id", this.getUser.bind(this));
     this.router.put("/:id", this.updateUser.bind(this));
     this.router.delete("/:id", this.deleteUser.bind(this));

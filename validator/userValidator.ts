@@ -12,7 +12,8 @@ create: Joi.object().keys({
   age: Joi.number().integer().required(),
   id:  Joi.string(),
   isActive: Joi.boolean(),
-  password: Joi.string().required()
+  password: Joi.string().required(),
+  image: Joi.string()
 }).options({abortEarly: false})
 }
 

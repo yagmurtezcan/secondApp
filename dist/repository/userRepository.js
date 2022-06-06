@@ -114,12 +114,12 @@ class UserRepository {
             });
         });
     }
-    checkUserActivity(userId) {
+    checkUserActivity(userEmail) {
         return new Promise((resolve, rejects) => {
             knex_1.default.db("user")
                 .select("*")
                 .first()
-                .where("id", userId)
+                .where("email", userEmail)
                 .where("isActive", true)
                 .then((res) => {
                 resolve(res);

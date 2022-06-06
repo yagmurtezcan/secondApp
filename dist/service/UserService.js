@@ -26,12 +26,15 @@ class UserService {
             });
         });
     }
-    createUser(user) {
+    createUser(user, fileName) {
         return new Promise((resolve, rejects) => __awaiter(this, void 0, void 0, function* () {
             userRepository_1.default.getUserByEmail(user.email).then((userFromDB) => __awaiter(this, void 0, void 0, function* () {
+                // create hashed password
                 const salt = yield bcrypt_1.default.genSalt(10);
                 const hashedPassword = yield bcrypt_1.default.hash(user.password, salt);
                 user.password = hashedPassword;
+                //upload photo
+                user.image = fileName.filename;
                 userRepository_1.default.createUser(user).then((resultValue) => {
                     resolve(resultValue);
                 }).catch((err) => {

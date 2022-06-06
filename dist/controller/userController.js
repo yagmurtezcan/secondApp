@@ -30,6 +30,7 @@ const express_1 = __importDefault(require("express"));
 const UserService_1 = __importDefault(require("../service/UserService"));
 const schemas = __importStar(require("../validator/userValidator"));
 const checkAuth_1 = __importDefault(require("../middleware/checkAuth"));
+const uploadProfilePhoto_1 = __importDefault(require("../middleware/uploadProfilePhoto"));
 class UserController {
     constructor() {
         this.router = express_1.default.Router();
@@ -48,8 +49,9 @@ class UserController {
     }
     createUser(req, res, next) {
         const user = req.body;
+        const fileName = req.file;
         schemas.default.create.validateAsync(user).then((resultValue) => {
-            UserService_1.default.createUser(resultValue).then((response) => {
+            UserService_1.default.createUser(resultValue, fileName).then((response) => {
                 return res.status(200).json({
                     status_code: 1,
                     message: "Operation Completed",
@@ -112,7 +114,7 @@ class UserController {
     }
     routes() {
         this.router.get("/", checkAuth_1.default, this.getAllUser.bind(this));
-        this.router.post("/", this.createUser.bind(this));
+        this.router.post("/", uploadProfilePhoto_1.default.single("image"), this.createUser.bind(this));
         this.router.get("/:id", this.getUser.bind(this));
         this.router.put("/:id", this.updateUser.bind(this));
         this.router.delete("/:id", this.deleteUser.bind(this));

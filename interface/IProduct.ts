@@ -7,5 +7,6 @@ export default interface Product {
     is_deleted: boolean,
     deleted_at: Date,
     created_at: Date,
-    updated_at: Date
+    updated_at: Date,
+    base64_image: string
 }

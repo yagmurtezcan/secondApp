@@ -16,13 +16,17 @@ class UserService {
     })
   }
 
-  createUser(user: User): Promise<User[]> {
+  createUser(user: User, fileName: any): Promise<User[]> {
     return new Promise(async (resolve, rejects) => {
       userRepository.getUserByEmail(user.email).then(async (userFromDB: User[]) => {
 
+        // create hashed password
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(user.password, salt)
         user.password = hashedPassword
+
+        //upload photo
+        user.image = fileName.filename
 
         userRepository.createUser(user).then((resultValue: User[]) => {
           resolve(resultValue)
@@ -74,7 +78,6 @@ class UserService {
         
     })
   }
-  
 }
 
 const userService = new UserService();

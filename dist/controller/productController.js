@@ -63,6 +63,13 @@ class ProductController {
     }
     createProduct(req, res, next) {
         const product = req.body;
+        var base64Regex = "/^(?:[A-Z0-9+\/]{4})*(?:[A-Z0-9+\/]{2}==|[A-Z0-9+\/]{3}=|[A-Z0-9+\/]{4})$/i";
+        if (product.base64_image === base64Regex) {
+            console.log("base64 true");
+        }
+        else {
+            console.log("it is not a base64 ");
+        }
         schemas.default.create.validateAsync(product).then((validatedProduct) => {
             ProductService_1.default.createProduct(validatedProduct).then((productFromService) => {
                 res.status(200).json({

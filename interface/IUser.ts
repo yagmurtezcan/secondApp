@@ -5,5 +5,6 @@ export default interface User {
   age: number;
   id: string;
   isActive: boolean;
-  password: string
+  password: string;
+  image: string;
 }
