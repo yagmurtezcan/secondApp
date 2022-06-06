@@ -26,7 +26,7 @@ class UserService {
         user.password = hashedPassword
 
         //upload photo
-        user.image = fileName.filename
+        // user.image = fileName.filename
 
         userRepository.createUser(user).then((resultValue: User[]) => {
           resolve(resultValue)
@@ -40,7 +40,7 @@ class UserService {
     });
   }
 
-  getUser(userId: string): Promise<User[]> {
+  getUser(userId: number): Promise<User[]> {
     return new Promise((resolve, rejects) => {
       userRepository.getUser(userId).then((user: User[]) => {
           resolve(user)
@@ -50,7 +50,7 @@ class UserService {
     });
   }
 
-  updateUser(userUpdateData: User, userId: string): Promise<User[]> {
+  updateUser(userUpdateData: User, userId: number): Promise<User[]> {
     return new Promise(async (resolve, rejects) => {
       userRepository.getUser(userId).then((user: User[]) => {
         userRepository.updateUser(userUpdateData, userId).then((updatedUser: User[]) => {
@@ -64,7 +64,7 @@ class UserService {
     });
   }
 
-  deleteUser(userId: string): Promise<number> {
+  deleteUser(userId: number): Promise<number> {
     return new Promise((resolve, rejects) => {
       userRepository.getUser(userId).then((user: User[]) => {
         userRepository.deleteUser(userId).then((deletedUser: number) => {

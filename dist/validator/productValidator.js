@@ -11,7 +11,7 @@ const schemas = {
         product_price: Joi.number().integer().required(),
         product_quantity: Joi.number().integer().required(),
         is_active: Joi.boolean().required(),
-        // base64_image: Joi.string().base64()
+        base64_image: Joi.string().dataUri().optional().default(null)
     }).options({ abortEarly: false })
 };
 exports.default = schemas;

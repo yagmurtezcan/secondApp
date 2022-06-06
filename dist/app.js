@@ -30,6 +30,7 @@ exports.YApp = void 0;
 const express_1 = __importDefault(require("express"));
 const http = __importStar(require("http"));
 const basketController_1 = __importDefault(require("./controller/basketController"));
+const fileUploadController_1 = __importDefault(require("./controller/fileUploadController"));
 const loginController_1 = __importDefault(require("./controller/loginController"));
 const productController_1 = __importDefault(require("./controller/productController"));
 const userController_1 = __importDefault(require("./controller/userController"));
@@ -50,6 +51,7 @@ class YApp {
         this.appRouter.use("/product", productController_1.default);
         this.appRouter.use("/", basketController_1.default);
         this.appRouter.use("/login", loginController_1.default);
+        this.appRouter.use("/", fileUploadController_1.default);
         this.server = http.createServer(this.app);
         this.server.on("error", (err) => {
             process.exit(2);

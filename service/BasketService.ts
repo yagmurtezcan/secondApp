@@ -6,7 +6,7 @@ import productRepository from "../repository/productRepository"
 import userRepository from "../repository/userRepository"
 
 class BasketService {
-    addToBasket(basketBody: Basket, userId: string): Promise<Basket[]> {  
+    addToBasket(basketBody: Basket, userId: number): Promise<Basket[]> {  
         return new Promise((resolve, rejects) => {
             userRepository.getUser(userId).then((user: User[]) => {
 
@@ -59,7 +59,7 @@ class BasketService {
         })
     }
 
-    getBasketList(userId: string): Promise<Basket[]> {
+    getBasketList(userId: number): Promise<Basket[]> {
         return new Promise((resolve, rejects) => {
             basketRepository.getBasketList(userId).then((userIdProductMatches: Basket[]) => {
                 resolve(userIdProductMatches)

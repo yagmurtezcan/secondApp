@@ -1,6 +1,7 @@
 import express from "express"
 import * as http from "http";
 import basketController from "./controller/basketController";
+import fileUploadController from "./controller/fileUploadController";
 import loginController from "./controller/loginController";
 import productController from "./controller/productController";
 import userController from "./controller/userController";
@@ -29,6 +30,7 @@ export class YApp {
     this.appRouter.use("/product", productController);
     this.appRouter.use("/", basketController);
     this.appRouter.use("/login", loginController)
+    this.appRouter.use("/", fileUploadController)
 
     this.server = http.createServer(this.app);
     this.server.on("error", (err: Error)=> {

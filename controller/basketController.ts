@@ -16,7 +16,7 @@ class BasketController implements IRouterBase{
     addToBasket(req: express.Request, res: express.Response, next: express.NextFunction) {
         const basket = req.body
 
-        const userId: BasketDetail = {id: req.params.id}
+        const userId = req.params.id
 
         schemas.default.detail.validateAsync(userId).then((validatedId: BasketDetail) => {
             schemas.default.add.validateAsync(basket).then((validatedBasketBody: Basket) => {
@@ -40,7 +40,7 @@ class BasketController implements IRouterBase{
     }
 
     deleteFromBasket(req: express.Request, res: express.Response, next: express.NextFunction) {
-        const userId: BasketDetail = {id: req.params.id}
+        const userId = req.params.id
     }
 
     routes() {

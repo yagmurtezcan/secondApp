@@ -3,7 +3,7 @@ export default interface User {
   lastname: string;
   email: string;
   age: number;
-  id: string;
+  id: number;
   isActive: boolean;
   password: string;
   image: string;

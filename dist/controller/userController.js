@@ -65,7 +65,7 @@ class UserController {
         });
     }
     getUser(req, res, next) {
-        const userInfo = { id: req.params.id };
+        const userInfo = req.params.id;
         schemas.default.detail.validateAsync(userInfo).then((userId) => {
             UserService_1.default.getUser(userId.id).then((response) => {
                 return res.status(200).json({
@@ -81,7 +81,7 @@ class UserController {
         });
     }
     updateUser(req, res, next) {
-        const userInfo = { id: req.params.id };
+        const userInfo = req.params.id;
         schemas.default.detail.validateAsync(userInfo).then((userId) => {
             let updateReqUser = req.body;
             UserService_1.default.updateUser(updateReqUser, userId.id).then((user) => {
@@ -98,7 +98,7 @@ class UserController {
         });
     }
     deleteUser(req, res, next) {
-        const userInfo = { id: req.params.id };
+        const userInfo = req.params.id;
         schemas.default.detail.validateAsync(userInfo).then((userId) => {
             UserService_1.default.deleteUser(userId.id).then((response) => {
                 return res.status(200).json({

@@ -20,7 +20,7 @@ async function verifyToken(req: TokenRequest, res: express.Response, next: expre
             }
         })
     } else {
-        next("token not found")
+        next("Token Not found")
     }
 }
 

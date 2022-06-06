@@ -34,7 +34,7 @@ function verifyToken(req, res, next) {
             });
         }
         else {
-            next("token not found");
+            next("Token Not found");
         }
     });
 }

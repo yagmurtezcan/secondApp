@@ -34,7 +34,7 @@ class UserService {
                 const hashedPassword = yield bcrypt_1.default.hash(user.password, salt);
                 user.password = hashedPassword;
                 //upload photo
-                user.image = fileName.filename;
+                // user.image = fileName.filename
                 userRepository_1.default.createUser(user).then((resultValue) => {
                     resolve(resultValue);
                 }).catch((err) => {

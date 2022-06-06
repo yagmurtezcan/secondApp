@@ -47,7 +47,7 @@ class UserController implements IRouterBase {
   }
 
   getUser(req: express.Request, res: express.Response, next: express.NextFunction) {
-    const userInfo: UserDetail = {id: req.params.id}
+    const userInfo = req.params.id
 
     schemas.default.detail.validateAsync(userInfo).then((userId: UserDetail) => {
       userService.getUser(userId.id).then((response: User[]) => {
@@ -65,7 +65,7 @@ class UserController implements IRouterBase {
   }
 
   updateUser(req: express.Request, res: express.Response, next: express.NextFunction) {
-    const userInfo: UserDetail = {id: req.params.id}
+    const userInfo = req.params.id
 
     schemas.default.detail.validateAsync(userInfo).then((userId: UserDetail) =>{
       let updateReqUser: User = req.body;
@@ -84,7 +84,7 @@ class UserController implements IRouterBase {
   }
 
   deleteUser(req: express.Request, res: express.Response, next: express.NextFunction) {
-    const userInfo: UserDetail = {id: req.params.id}
+    const userInfo = req.params.id
 
     schemas.default.detail.validateAsync(userInfo).then((userId: UserDetail) => {
       userService.deleteUser(userId.id).then((response: number) => {

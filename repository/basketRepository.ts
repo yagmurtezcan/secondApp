@@ -65,7 +65,7 @@ class BasketRepository {
         })
     }
 
-    getBasketList(userId: string): Promise<Basket[]> {
+    getBasketList(userId: number): Promise<Basket[]> {
         return new Promise((resolve, rejects) => {
             knexDB.db("basket")
                 .select("*")
