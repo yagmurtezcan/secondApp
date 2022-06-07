@@ -37,7 +37,7 @@ class BasketController {
     }
     addToBasket(req, res, next) {
         const basket = req.body;
-        const userId = req.params.id;
+        const userId = { id: req.params.id };
         schemas.default.detail.validateAsync(userId).then((validatedId) => {
             schemas.default.add.validateAsync(basket).then((validatedBasketBody) => {
                 BasketService_1.default.addToBasket(validatedBasketBody, validatedId.id).then((basketFromService) => {
@@ -57,7 +57,7 @@ class BasketController {
         });
     }
     deleteFromBasket(req, res, next) {
-        const userId = req.params.id;
+        const userId = { id: req.params.id };
     }
     routes() {
         this.router.post("/user/:id/basket", this.addToBasket.bind(this));

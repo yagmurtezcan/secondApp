@@ -6,7 +6,7 @@ import productRepository from "../repository/productRepository"
 import userRepository from "../repository/userRepository"
 
 class BasketService {
-    addToBasket(basketBody: Basket, userId: number): Promise<Basket[]> {  
+    addToBasket(basketBody: Basket, userId: string): Promise<Basket[]> {  
         return new Promise((resolve, rejects) => {
             userRepository.getUser(userId).then((user: User[]) => {
 

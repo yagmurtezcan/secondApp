@@ -1,15 +1,11 @@
-import User from "../interface/IUser"
-import userService from "./UserService"
-
 class FileUploadService {
-    loadProfilePhoto(profilePhoto: any, user: User, userId: number): Promise<User[]> {
+    loadProfilePhoto(profilePhoto: any): Promise<any> {
         return new Promise((resolve, rejects) => {
-            user.image = profilePhoto
-            userService.updateUser(user, userId).then((updatedUser: User[]) => {
-                resolve(updatedUser)
-            }).catch((err: Error) => {
-                rejects(err)
-            })
+          if(profilePhoto){
+              resolve(profilePhoto)
+          } else {
+              rejects("please select profile photo")
+          }
         })
     }
 }

@@ -92,11 +92,10 @@ class UserRepository {
         return new Promise((resolve, rejects) => {
             knex_1.default.db("user")
                 .update(userUpdateData)
-                .returning("*")
+                .returning(["id", "firstname", "lastname", "email", "age", "isActive"])
                 .where("id", userId)
                 .then((res) => {
-                const user = res;
-                resolve(user);
+                resolve(res[0]);
             }).catch((err) => {
                 rejects(err);
             });

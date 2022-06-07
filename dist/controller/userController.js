@@ -49,9 +49,8 @@ class UserController {
     }
     createUser(req, res, next) {
         const user = req.body;
-        const fileName = req.file;
         schemas.default.create.validateAsync(user).then((resultValue) => {
-            UserService_1.default.createUser(resultValue, fileName).then((response) => {
+            UserService_1.default.createUser(resultValue).then((response) => {
                 return res.status(200).json({
                     status_code: 1,
                     message: "Operation Completed",
@@ -65,7 +64,7 @@ class UserController {
         });
     }
     getUser(req, res, next) {
-        const userInfo = req.params.id;
+        const userInfo = { id: req.params.id };
         schemas.default.detail.validateAsync(userInfo).then((userId) => {
             UserService_1.default.getUser(userId.id).then((response) => {
                 return res.status(200).json({
@@ -81,7 +80,7 @@ class UserController {
         });
     }
     updateUser(req, res, next) {
-        const userInfo = req.params.id;
+        const userInfo = { id: req.params.id };
         schemas.default.detail.validateAsync(userInfo).then((userId) => {
             let updateReqUser = req.body;
             UserService_1.default.updateUser(updateReqUser, userId.id).then((user) => {

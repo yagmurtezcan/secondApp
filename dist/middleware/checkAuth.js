@@ -24,8 +24,8 @@ function verifyToken(req, res, next) {
                 if (error)
                     next("token not found");
                 else if (decoded) {
-                    userRepository_1.default.checkUserActivity(decoded.email).then(() => {
-                        req.user = decoded.user;
+                    userRepository_1.default.checkUserActivity(decoded.email).then((activeUser) => {
+                        req.user = activeUser;
                         next();
                     }).catch((err) => {
                         next(err);

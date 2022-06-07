@@ -16,7 +16,7 @@ class UserService {
     })
   }
 
-  createUser(user: User, fileName: any): Promise<User[]> {
+  createUser(user: User): Promise<User[]> {
     return new Promise(async (resolve, rejects) => {
       userRepository.getUserByEmail(user.email).then(async (userFromDB: User[]) => {
 
@@ -24,9 +24,6 @@ class UserService {
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(user.password, salt)
         user.password = hashedPassword
-
-        //upload photo
-        // user.image = fileName.filename
 
         userRepository.createUser(user).then((resultValue: User[]) => {
           resolve(resultValue)
@@ -40,7 +37,7 @@ class UserService {
     });
   }
 
-  getUser(userId: number): Promise<User[]> {
+  getUser(userId: string): Promise<User[]> {
     return new Promise((resolve, rejects) => {
       userRepository.getUser(userId).then((user: User[]) => {
           resolve(user)
@@ -50,10 +47,10 @@ class UserService {
     });
   }
 
-  updateUser(userUpdateData: User, userId: number): Promise<User[]> {
+  updateUser(userUpdateData: User, userId: string): Promise<User> {
     return new Promise(async (resolve, rejects) => {
       userRepository.getUser(userId).then((user: User[]) => {
-        userRepository.updateUser(userUpdateData, userId).then((updatedUser: User[]) => {
+        userRepository.updateUser(userUpdateData, userId).then((updatedUser: User) => {
           resolve(updatedUser)
         }).catch((err: Error) => {
           rejects(err)
@@ -64,7 +61,7 @@ class UserService {
     });
   }
 
-  deleteUser(userId: number): Promise<number> {
+  deleteUser(userId: string): Promise<number> {
     return new Promise((resolve, rejects) => {
       userRepository.getUser(userId).then((user: User[]) => {
         userRepository.deleteUser(userId).then((deletedUser: number) => {

@@ -2,6 +2,7 @@ import express from "express"
 import Basket from "../interface/IBasket"
 import IRouterBase from "../interface/IRouter"
 import BasketDetail from "../interface/RequestBasketDetail"
+import UserDetail from "../interface/RequestUserDetail"
 import basketService from "../service/BasketService"
 import * as schemas from "../validator/basketValidator"
 
@@ -16,7 +17,7 @@ class BasketController implements IRouterBase{
     addToBasket(req: express.Request, res: express.Response, next: express.NextFunction) {
         const basket = req.body
 
-        const userId = req.params.id
+        const userId: UserDetail = {id: req.params.id}
 
         schemas.default.detail.validateAsync(userId).then((validatedId: BasketDetail) => {
             schemas.default.add.validateAsync(basket).then((validatedBasketBody: Basket) => {
@@ -40,7 +41,7 @@ class BasketController implements IRouterBase{
     }
 
     deleteFromBasket(req: express.Request, res: express.Response, next: express.NextFunction) {
-        const userId = req.params.id
+        const userId: UserDetail = {id: req.params.id}
     }
 
     routes() {

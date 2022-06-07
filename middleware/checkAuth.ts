@@ -11,8 +11,8 @@ async function verifyToken(req: TokenRequest, res: express.Response, next: expre
         jwt.verify(token, config.secret_key, (error: any, decoded: any) => {
             if(error) next("token not found")
             else if(decoded) {
-                userRepository.checkUserActivity(decoded.email).then(() => {
-                    req.user = decoded.user
+                userRepository.checkUserActivity(decoded.email).then((activeUser) => {
+                    req.user = activeUser
                     next()
                 }).catch((err: Error) => {
                     next(err)

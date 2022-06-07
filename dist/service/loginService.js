@@ -21,9 +21,9 @@ class LoginService {
                     }
                     else {
                         const token = jsonwebtoken_1.default.sign({
-                            id: user.id,
-                            email: user.email,
-                            isActive: user.isActive
+                            id: userFromDB.id,
+                            email: userFromDB.email,
+                            isActive: userFromDB.isActive
                         }, config_1.default.secret_key, {
                             expiresIn: "2h"
                         });

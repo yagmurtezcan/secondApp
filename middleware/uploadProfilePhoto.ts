@@ -1,11 +1,12 @@
 import multer from "multer"
+import express from "express"
 
 const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "./images")
     },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + "--" + file.originalname)
+    filename: (req: express.Request, file, cb) => {
+        cb(null,  req.user.id + "-" + "avatar")
     }
 })
 

@@ -14,13 +14,11 @@ class FileUploadController {
     }
     loadProfilePhoto(req, res, next) {
         const profilePhoto = req.file;
-        const userId = req.user.id;
-        const user = req.user;
-        fileUploadService_1.default.loadProfilePhoto(profilePhoto, user, userId).then((photoFile) => {
+        fileUploadService_1.default.loadProfilePhoto(profilePhoto).then((existProfilePhoto) => {
             res.status(200).json({
                 status_code: 1,
                 message: "Operation Completed",
-                data: photoFile
+                image_key: existProfilePhoto === null || existProfilePhoto === void 0 ? void 0 : existProfilePhoto.filename
             });
         }).catch((err) => {
             next(err);

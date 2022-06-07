@@ -1,3 +1,3 @@
 export default interface UserDetail {
-    id: number
+    id: string
 }
