@@ -7,6 +7,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const userRepository_1 = __importDefault(require("../repository/userRepository"));
 const config_1 = __importDefault(require("../config"));
+const emailService_1 = __importDefault(require("./emailService"));
 class LoginService {
     login(user) {
         return new Promise((resolve, rejects) => {
@@ -28,6 +29,7 @@ class LoginService {
                             expiresIn: "2h"
                         });
                         resolve(token);
+                        emailService_1.default.sendMail();
                     }
                 });
             }).catch((err) => {

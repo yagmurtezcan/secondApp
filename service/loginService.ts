@@ -3,6 +3,7 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import userRepository from "../repository/userRepository"
 import config from "../config"
+import mailService from "./emailService"
 
 class LoginService {
     login(user: User): Promise<string> {
@@ -27,6 +28,7 @@ class LoginService {
                         }
                         )
                         resolve(token)
+                        mailService.sendMail()
                     }
                 })
             }).catch((err: Error) =>{
@@ -34,7 +36,6 @@ class LoginService {
             })
         })
     }
-
 }
 
 const loginService = new LoginService()

@@ -1,6 +1,7 @@
 import express from "express"
 import IRouterBase from "../interface/IRouter"
 import User from "../interface/IUser"
+import mailService from "../service/emailService"
 import loginService from "../service/loginService"
 import * as schemas from "../validator/loginValidator"
 

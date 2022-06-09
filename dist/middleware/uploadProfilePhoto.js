@@ -9,7 +9,7 @@ const fileStorage = multer_1.default.diskStorage({
         cb(null, "./images");
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + "--" + file.originalname);
+        cb(null, req.user.id + "-" + "avatar");
     }
 });
 const fileFilter = (req, file, cb) => {
