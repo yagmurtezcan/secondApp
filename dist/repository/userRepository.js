@@ -48,7 +48,7 @@ class UserRepository {
     getUserByEmail(email) {
         return new Promise((resolve, rejects) => __awaiter(this, void 0, void 0, function* () {
             yield knex_1.default.db("user")
-                .select("*")
+                .select("email")
                 .first()
                 .where("email", email)
                 .then((res) => {

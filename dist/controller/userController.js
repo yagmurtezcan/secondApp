@@ -93,7 +93,7 @@ class UserController {
         });
     }
     deleteUser(req, res, next) {
-        const userInfo = req.params.id;
+        const userInfo = { id: req.params.id };
         schemas.default.detail.validateAsync(userInfo).then((userId) => {
             UserService_1.default.deleteUser(userId.id).then((response) => {
                 return res.status(200).json({
