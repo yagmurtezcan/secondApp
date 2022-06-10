@@ -13,7 +13,7 @@ class MailService {
             text: "text text text"
         };
         this.mailTransporter = nodemailer_1.default.createTransport({
-            service: "gmail",
+            service: "hotmail",
             auth: {
                 user: "besttesterever@outlook.com",
                 pass: "Besttester123"

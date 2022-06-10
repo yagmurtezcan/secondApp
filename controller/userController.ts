@@ -6,6 +6,7 @@ import User from "../interface/IUser";
 import UserDetail from "../interface/RequestUserDetail";
 import checkAuth from "../middleware/checkAuth"
 import upload from "../middleware/uploadProfilePhoto";
+import OperationCompleted from "../src/common/http.response";
 
 class UserController implements IRouterBase {
   router: express.Router;
@@ -16,12 +17,8 @@ class UserController implements IRouterBase {
   }
 
   getAllUser(req: express.Request, res: express.Response, next: express.NextFunction) {
-    userService.getAllUser().then((users: User[]) => {
-      res.status(200).json({
-        status_code: 1,
-        message: "Operation Completed",
-        data: users
-      })
+    userService.getAllUser().then((users: OperationCompleted) => {
+      res.status(200).send(users)
     }).catch((err: Error) => {
       next(err)
     })
@@ -49,7 +46,7 @@ class UserController implements IRouterBase {
     const userInfo: UserDetail = {id: req.params.id}
 
     schemas.default.detail.validateAsync(userInfo).then((userId: UserDetail) => {
-      userService.getUser(userId.id).then((response: User[]) => {
+      userService.getUser(userId.id).then((response: User) => {
         return res.status(200).json({
           status_code: 1,
           message: "Operation Completed",
@@ -83,7 +80,7 @@ class UserController implements IRouterBase {
   }
 
   deleteUser(req: express.Request, res: express.Response, next: express.NextFunction) {
-    const userInfo = req.params.id
+    const userInfo: UserDetail = {id: req.params.id}
 
     schemas.default.detail.validateAsync(userInfo).then((userId: UserDetail) => {
       userService.deleteUser(userId.id).then((response: number) => {
@@ -102,9 +99,9 @@ class UserController implements IRouterBase {
   routes() {
     this.router.get("/", checkAuth, this.getAllUser.bind(this));
     this.router.post("/", upload.single("image"), this.createUser.bind(this));
-    this.router.get("/:id", this.getUser.bind(this));
-    this.router.put("/:id", this.updateUser.bind(this));
-    this.router.delete("/:id", this.deleteUser.bind(this));
+    this.router.get("/:id", checkAuth, this.getUser.bind(this));
+    this.router.put("/:id", checkAuth, this.updateUser.bind(this));
+    this.router.delete("/:id", checkAuth, this.deleteUser.bind(this));
   }
 }
 

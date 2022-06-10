@@ -11,7 +11,7 @@ class BasketService {
         return new Promise((resolve, rejects) => {
             userRepository_1.default.getUser(userId).then((user) => {
                 basketRepository_1.default.checkProductStock(basketBody.quantity, basketBody.product_id).then((product) => {
-                    this.getBasketList(user[0].id).then((basketList) => {
+                    this.getBasketList(user.id).then((basketList) => {
                         productRepository_1.default.getProductById(basketBody.product_id).then((productfrom) => {
                         });
                         let basketCount = basketList.length;
@@ -21,7 +21,7 @@ class BasketService {
                         }
                         if (foundProduct == undefined) {
                             basketBody.product_name = product[0].product_name;
-                            basketBody.user_id = user[0].id;
+                            basketBody.user_id = user.id;
                             basketRepository_1.default.addToBasket(basketBody).then((basketFromRepository) => {
                                 resolve(basketFromRepository);
                             }).catch((err) => {

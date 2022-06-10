@@ -38,11 +38,7 @@ class UserController {
     }
     getAllUser(req, res, next) {
         UserService_1.default.getAllUser().then((users) => {
-            res.status(200).json({
-                status_code: 1,
-                message: "Operation Completed",
-                data: users
-            });
+            res.status(200).send(users);
         }).catch((err) => {
             next(err);
         });
@@ -114,9 +110,9 @@ class UserController {
     routes() {
         this.router.get("/", checkAuth_1.default, this.getAllUser.bind(this));
         this.router.post("/", uploadProfilePhoto_1.default.single("image"), this.createUser.bind(this));
-        this.router.get("/:id", this.getUser.bind(this));
-        this.router.put("/:id", this.updateUser.bind(this));
-        this.router.delete("/:id", this.deleteUser.bind(this));
+        this.router.get("/:id", checkAuth_1.default, this.getUser.bind(this));
+        this.router.put("/:id", checkAuth_1.default, this.updateUser.bind(this));
+        this.router.delete("/:id", checkAuth_1.default, this.deleteUser.bind(this));
     }
 }
 const userController = new UserController();

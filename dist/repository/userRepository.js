@@ -17,7 +17,7 @@ class UserRepository {
     getAllUsers() {
         return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
             yield knex_1.default.db("user")
-                .select("*")
+                .select(["id", "firstname", "lastname", "email", "isActive", "age", "image"])
                 .then((res) => {
                 const user = res;
                 resolve(user);
@@ -29,11 +29,12 @@ class UserRepository {
     getUser(userId) {
         return new Promise((resolve, rejects) => __awaiter(this, void 0, void 0, function* () {
             yield knex_1.default.db("user")
-                .select("*")
+                .select(["id", "email"])
+                .first()
                 .where("id", userId)
                 .then((res) => {
                 const user = res;
-                if (user.length > 0) {
+                if (user) {
                     resolve(user);
                 }
                 else {
@@ -48,9 +49,10 @@ class UserRepository {
         return new Promise((resolve, rejects) => __awaiter(this, void 0, void 0, function* () {
             yield knex_1.default.db("user")
                 .select("*")
+                .first()
                 .where("email", email)
                 .then((res) => {
-                if (res.length == 0) {
+                if (res) {
                     resolve(res);
                 }
                 else {

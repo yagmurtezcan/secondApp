@@ -18,7 +18,7 @@ class FileUploadController {
             res.status(200).json({
                 status_code: 1,
                 message: "Operation Completed",
-                image_key: existProfilePhoto === null || existProfilePhoto === void 0 ? void 0 : existProfilePhoto.filename
+                data: { image_key: existProfilePhoto === null || existProfilePhoto === void 0 ? void 0 : existProfilePhoto.filename }
             });
         }).catch((err) => {
             next(err);

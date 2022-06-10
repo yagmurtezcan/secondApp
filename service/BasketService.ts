@@ -8,11 +8,11 @@ import userRepository from "../repository/userRepository"
 class BasketService {
     addToBasket(basketBody: Basket, userId: string): Promise<Basket[]> {  
         return new Promise((resolve, rejects) => {
-            userRepository.getUser(userId).then((user: User[]) => {
+            userRepository.getUser(userId).then((user: User) => {
 
                 basketRepository.checkProductStock(basketBody.quantity, basketBody.product_id).then((product: Product[]) => {
                         
-                this.getBasketList(user[0].id).then((basketList: Basket[]) => {
+                this.getBasketList(user.id).then((basketList: Basket[]) => {
                     productRepository.getProductById(basketBody.product_id).then((productfrom) => {
                         
                     })
@@ -26,7 +26,7 @@ class BasketService {
                            
                     if(foundProduct == undefined) {
                         basketBody.product_name = product[0].product_name
-                        basketBody.user_id = user[0].id
+                        basketBody.user_id = user.id
                         basketRepository.addToBasket(basketBody).then((basketFromRepository: Basket[]) => {
                             resolve(basketFromRepository)
                         }).catch((err: Error) => {

@@ -5,8 +5,10 @@ const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "./images")
     },
-    filename: (req: express.Request, file, cb) => {
-        cb(null,  req.user.id + "-" + "avatar")
+    filename: (req, file, cb) => {
+        const uniqueSuffix = req.user.id + '-' + Math.round(Math.random() * 1E9)
+        const ext = file.originalname.split(".") [1]
+        cb(null, uniqueSuffix + "." + ext)
     }
 })
 

@@ -14,12 +14,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const userRepository_1 = __importDefault(require("../repository/userRepository"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const http_response_1 = __importDefault(require("../src/common/http.response"));
 class UserService {
     getAllUser() {
         return new Promise((resolve, rejects) => {
             userRepository_1.default.getAllUsers().then((user) => {
                 console.log(JSON.stringify(user));
-                resolve(user);
+                resolve(new http_response_1.default(undefined, user));
             }).catch(err => {
                 console.error("Err: " + err);
                 rejects("database_error");

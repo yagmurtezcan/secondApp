@@ -5,7 +5,7 @@ class UserRepository {
     getAllUsers(): Promise<User[]> {
         return new Promise(async (resolve, reject) => {
             await knexDB.db("user")
-                .select("*")
+                .select(["id", "firstname", "lastname", "email", "isActive", "age", "image"])
                 .then((res: User[]) => {
                     const user = res;
                     resolve(user);
@@ -15,14 +15,15 @@ class UserRepository {
         });
     }
 
-    getUser(userId: string): Promise<User[]> {
+    getUser(userId: string): Promise<User> {
         return new Promise(async (resolve, rejects) => {
             await knexDB.db("user")
-                .select("*")
+                .select(["id", "email"])
+                .first()
                 .where("id", userId)
-                .then((res: User[]) => {
+                .then((res: User) => {
                     const user = res;
-                    if(user.length > 0){
+                    if(user){
                         resolve(user)
                     }else{
                         rejects("user not found")
@@ -33,13 +34,14 @@ class UserRepository {
         })
     }
 
-    getUserByEmail(email: string): Promise<User[]> {
+    getUserByEmail(email: string): Promise<User> {
         return new Promise(async (resolve, rejects) => {
             await knexDB.db("user")
-                .select("*")
+                .select("email")
+                .first()
                 .where("email", email)
-                .then((res: User[]) => {
-                    if(res.length == 0){
+                .then((res: User) => {
+                    if(res){
                         resolve(res)
                     }else{
                         rejects("email exits")

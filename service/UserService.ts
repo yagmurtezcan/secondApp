@@ -1,14 +1,16 @@
 import User from "../interface/IUser";
 import userRepository from "../repository/userRepository";
 import bcrypt from "bcrypt"
+import OperationCompleted from "../src/common/http.response";
 
 class UserService {
 
-  getAllUser(): Promise<User[]> {
+  getAllUser(): Promise<OperationCompleted> {
     return new Promise((resolve, rejects) => {
       userRepository.getAllUsers().then((user: User[]) => {
         console.log(JSON.stringify(user))
-        resolve(user)
+        resolve(new OperationCompleted(undefined, user))
+
       }).catch(err => {
         console.error("Err: " + err)
         rejects("database_error")
@@ -18,7 +20,7 @@ class UserService {
 
   createUser(user: User): Promise<User[]> {
     return new Promise(async (resolve, rejects) => {
-      userRepository.getUserByEmail(user.email).then(async (userFromDB: User[]) => {
+      userRepository.getUserByEmail(user.email).then(async (userFromDB: User) => {
 
         // create hashed password
         const salt = await bcrypt.genSalt(10)
@@ -37,9 +39,9 @@ class UserService {
     });
   }
 
-  getUser(userId: string): Promise<User[]> {
+  getUser(userId: string): Promise<User> {
     return new Promise((resolve, rejects) => {
-      userRepository.getUser(userId).then((user: User[]) => {
+      userRepository.getUser(userId).then((user: User) => {
           resolve(user)
       }).catch((err: Error) => {
         rejects(err)
@@ -49,7 +51,7 @@ class UserService {
 
   updateUser(userUpdateData: User, userId: string): Promise<User> {
     return new Promise(async (resolve, rejects) => {
-      userRepository.getUser(userId).then((user: User[]) => {
+      userRepository.getUser(userId).then((user: User) => {
         userRepository.updateUser(userUpdateData, userId).then((updatedUser: User) => {
           resolve(updatedUser)
         }).catch((err: Error) => {
@@ -63,7 +65,7 @@ class UserService {
 
   deleteUser(userId: string): Promise<number> {
     return new Promise((resolve, rejects) => {
-      userRepository.getUser(userId).then((user: User[]) => {
+      userRepository.getUser(userId).then((user: User) => {
         userRepository.deleteUser(userId).then((deletedUser: number) => {
           resolve(deletedUser)
         }).catch((err: Error) => {

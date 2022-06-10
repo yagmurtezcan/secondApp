@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Joi = require("joi");
 const schemas = {
     detail: Joi.object().keys({
-        id: Joi.string().required(),
+        id: Joi.number().required(),
     }).options({ abortEarly: false }),
     create: Joi.object().keys({
         firstname: Joi.string().min(2).max(50).trim().required(),

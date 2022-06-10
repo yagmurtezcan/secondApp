@@ -19,7 +19,7 @@ class FileUploadController implements IRouterBase {
             res.status(200).json({
                 status_code: 1,
                 message: "Operation Completed",
-                image_key: existProfilePhoto?.filename
+                data: {image_key: existProfilePhoto?.filename}
             })
         }).catch((err: Error) => {
             next(err)

@@ -36,8 +36,6 @@ class BasketController implements IRouterBase{
         }).catch((err: Error) => {
             next(err)
         })
-
-       
     }
 
     deleteFromBasket(req: express.Request, res: express.Response, next: express.NextFunction) {
