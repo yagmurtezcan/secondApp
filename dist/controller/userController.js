@@ -47,11 +47,7 @@ class UserController {
         const user = req.body;
         schemas.default.create.validateAsync(user).then((resultValue) => {
             UserService_1.default.createUser(resultValue).then((response) => {
-                return res.status(200).json({
-                    status_code: 1,
-                    message: "Operation Completed",
-                    data: response
-                });
+                res.status(200).send(response);
             }).catch((err) => {
                 next(err);
             });

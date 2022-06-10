@@ -28,12 +28,8 @@ class UserController implements IRouterBase {
     const user: User = req.body;
 
     schemas.default.create.validateAsync(user).then((resultValue: User) => {
-      userService.createUser(resultValue).then((response: User[]) => {
-            return res.status(200).json({
-              status_code: 1,
-              message: "Operation Completed",
-              data: response
-            });
+      userService.createUser(resultValue).then((response: OperationCompleted) => {
+            res.status(200).send(response)
           }).catch((err: Error) => {
             next(err);
           });

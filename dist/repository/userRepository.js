@@ -48,8 +48,7 @@ class UserRepository {
     getUserByEmail(email) {
         return new Promise((resolve, rejects) => __awaiter(this, void 0, void 0, function* () {
             yield knex_1.default.db("user")
-                .select("email")
-                .first()
+                .select("*")
                 .where("email", email)
                 .then((res) => {
                 if (res) {
@@ -81,10 +80,10 @@ class UserRepository {
         return new Promise((resolve, rejects) => {
             knex_1.default.db("user")
                 .insert(user)
-                .returning("*")
+                .returning(["id"])
                 .then((res) => {
                 const user = res;
-                resolve(user);
+                resolve(user[0]);
             }).catch((err) => {
                 rejects(err);
             });

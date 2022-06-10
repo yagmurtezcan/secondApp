@@ -18,17 +18,17 @@ class UserService {
     })
   }
 
-  createUser(user: User): Promise<User[]> {
+  createUser(user: User): Promise<OperationCompleted> {
     return new Promise(async (resolve, rejects) => {
-      userRepository.getUserByEmail(user.email).then(async (userFromDB: User) => {
+      userRepository.getUserByEmail(user.email).then(async (userFromDB: User[]) => {
 
         // create hashed password
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(user.password, salt)
         user.password = hashedPassword
 
-        userRepository.createUser(user).then((resultValue: User[]) => {
-          resolve(resultValue)
+        userRepository.createUser(user).then((resultValue: User) => {
+          resolve(new OperationCompleted(undefined, resultValue))
         }).catch((err: Error) => {
           rejects(err)
         })

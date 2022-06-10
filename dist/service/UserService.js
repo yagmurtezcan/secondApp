@@ -35,7 +35,7 @@ class UserService {
                 const hashedPassword = yield bcrypt_1.default.hash(user.password, salt);
                 user.password = hashedPassword;
                 userRepository_1.default.createUser(user).then((resultValue) => {
-                    resolve(resultValue);
+                    resolve(new http_response_1.default(undefined, resultValue));
                 }).catch((err) => {
                     rejects(err);
                 });

@@ -34,13 +34,12 @@ class UserRepository {
         })
     }
 
-    getUserByEmail(email: string): Promise<User> {
+    getUserByEmail(email: string): Promise<User[]> {
         return new Promise(async (resolve, rejects) => {
             await knexDB.db("user")
-                .select("email")
-                .first()
+                .select("*")
                 .where("email", email)
-                .then((res: User) => {
+                .then((res: User[]) => {
                     if(res){
                         resolve(res)
                     }else{
@@ -67,14 +66,14 @@ class UserRepository {
         })
     }
 
-    createUser(user: User): Promise<User[]> {
+    createUser(user: User): Promise<User> {
         return new Promise((resolve,rejects) => {
                  knexDB.db("user")
                 .insert(user)
-                .returning("*")
+                .returning(["id"])
                 .then((res: User[]) => {
                     const user = res
-                    resolve(user)
+                    resolve(user[0])
                 }).catch((err: Error) => {
                     rejects(err)
                 })
