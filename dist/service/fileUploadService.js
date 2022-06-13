@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const http_exception_1 = require("../src/common/http.exception");
 class FileUploadService {
     loadProfilePhoto(profilePhoto) {
         return new Promise((resolve, rejects) => {
@@ -7,7 +8,7 @@ class FileUploadService {
                 resolve(profilePhoto);
             }
             else {
-                rejects("please select profile photo");
+                rejects(new http_exception_1.ProductNotFoundException("Please select profile photo"));
             }
         });
     }

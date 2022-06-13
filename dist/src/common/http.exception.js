@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProductNotFoundException = exports.UserNotFoundException = exports.UserAlreadyExistException = exports.TokenNotFoundException = exports.HttpException = void 0;
+exports.SelectPhotoException = exports.ProductNotFoundException = exports.UserNotFoundException = exports.UserAlreadyExistException = exports.TokenNotFoundException = exports.HttpException = void 0;
 class HttpException extends Error {
     constructor(status, message, statusCode, data) {
         super();
@@ -42,4 +42,12 @@ class ProductNotFoundException extends HttpException {
     }
 }
 exports.ProductNotFoundException = ProductNotFoundException;
+class SelectPhotoException extends HttpException {
+    constructor(message, statusCode) {
+        if (!statusCode)
+            statusCode: 2;
+        super(400, message || "Please select a photo", statusCode);
+    }
+}
+exports.SelectPhotoException = SelectPhotoException;
 //# sourceMappingURL=http.exception.js.map
