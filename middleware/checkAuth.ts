@@ -1,7 +1,8 @@
 import express from "express"
-import jwt from "jsonwebtoken"
+import jwt, { TokenExpiredError } from "jsonwebtoken"
 import config from "../config"
 import userRepository from "../repository/userRepository"
+import { TokenNotFoundException } from "../src/common/http.exception"
 import { TokenRequest } from "../tokenRequest"
 
 async function verifyToken(req: TokenRequest, res: express.Response, next: express.NextFunction): Promise<void> {
@@ -9,7 +10,7 @@ async function verifyToken(req: TokenRequest, res: express.Response, next: expre
 
     if(token){
         jwt.verify(token, config.secret_key, (error: any, decoded: any) => {
-            if(error) next("token not found")
+            if(error) next(new TokenNotFoundException())
             else if(decoded) {
                 userRepository.checkUserActivity(decoded.email).then((activeUser) => {
                     req.user = activeUser
@@ -20,7 +21,7 @@ async function verifyToken(req: TokenRequest, res: express.Response, next: expre
             }
         })
     } else {
-        next("Token Not found")
+        next(new TokenNotFoundException())
     }
 }
 

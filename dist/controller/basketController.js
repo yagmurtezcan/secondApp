@@ -38,16 +38,13 @@ class BasketController {
     addToBasket(req, res, next) {
         const basket = req.body;
         const userId = { id: req.params.id };
-        schemas.default.detail.validateAsync(userId).then((validatedUserId) => {
-            schemas.default.add.validateAsync(basket).then((validatedBasketBody) => {
-                BasketService_1.default.addToBasket(validatedBasketBody, validatedUserId.id).then((basketFromService) => {
-                    res.status(200).json({
-                        status_code: 1,
-                        message: "Operation Completed",
-                        // data: basketFromService
-                    });
-                }).catch((err) => {
-                    next(err);
+        basket.user_id = Number(userId.id);
+        schemas.default.add.validateAsync(basket).then((validatedBasketBody) => {
+            BasketService_1.default.addToBasket(validatedBasketBody).then((basketFromService) => {
+                res.status(200).json({
+                    status_code: 1,
+                    message: "Operation Completed",
+                    // data: basketFromService
                 });
             }).catch((err) => {
                 next(err);

@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const knex_1 = __importDefault(require("../db/knex"));
+const http_exception_1 = require("../src/common/http.exception");
 class UserRepository {
     getAllUsers() {
         return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
@@ -52,10 +53,10 @@ class UserRepository {
                 .where("email", email)
                 .then((res) => {
                 if (res) {
-                    resolve(res);
+                    rejects(new http_exception_1.UserAlreadyExist("User already exist"));
                 }
                 else {
-                    rejects("email exits");
+                    resolve(res);
                 }
             }).catch((err) => {
                 rejects(err);

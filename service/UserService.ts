@@ -39,21 +39,21 @@ class UserService {
     });
   }
 
-  getUser(userId: string): Promise<User> {
+  getUser(userId: string): Promise<OperationCompleted> {
     return new Promise((resolve, rejects) => {
       userRepository.getUser(userId).then((user: User) => {
-          resolve(user)
+          resolve(new OperationCompleted(undefined, user))
       }).catch((err: Error) => {
         rejects(err)
       })
     });
   }
 
-  updateUser(userUpdateData: User, userId: string): Promise<User> {
+  updateUser(userUpdateData: User, userId: string): Promise<OperationCompleted> {
     return new Promise(async (resolve, rejects) => {
       userRepository.getUser(userId).then((user: User) => {
         userRepository.updateUser(userUpdateData, userId).then((updatedUser: User) => {
-          resolve(updatedUser)
+          resolve(new OperationCompleted(undefined, user))
         }).catch((err: Error) => {
           rejects(err)
         })
@@ -63,11 +63,11 @@ class UserService {
     });
   }
 
-  deleteUser(userId: string): Promise<number> {
+  deleteUser(userId: string): Promise<OperationCompleted> {
     return new Promise((resolve, rejects) => {
       userRepository.getUser(userId).then((user: User) => {
         userRepository.deleteUser(userId).then((deletedUser: number) => {
-          resolve(deletedUser)
+          resolve(new OperationCompleted)
         }).catch((err: Error) => {
           rejects(err)
         })

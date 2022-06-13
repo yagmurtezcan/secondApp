@@ -1,5 +1,6 @@
 import User from "../interface/IUser";
 import knexDB from "../db/knex";
+import { UserAlreadyExistException, UserNotFoundException } from "../src/common/http.exception";
 
 class UserRepository {
     getAllUsers(): Promise<User[]> {
@@ -26,7 +27,7 @@ class UserRepository {
                     if(user){
                         resolve(user)
                     }else{
-                        rejects("user not found")
+                        rejects(new UserNotFoundException("User not Found"))
                     }
                 }).catch((err: Error) => {
                     rejects(err)
@@ -41,9 +42,9 @@ class UserRepository {
                 .where("email", email)
                 .then((res: User[]) => {
                     if(res){
-                        resolve(res)
+                        rejects(new UserAlreadyExistException("User already exist"))
                     }else{
-                        rejects("email exits")
+                        resolve(res)
                     }
                 }).catch((err: Error) => {
                     rejects(err)

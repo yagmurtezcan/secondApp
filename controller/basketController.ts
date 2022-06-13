@@ -18,9 +18,8 @@ class BasketController implements IRouterBase{
         const basket = req.body
 
         const userId: UserDetail = {id: req.params.id}
-        basket.user_id = userId // artık user setlendiği için basket içinde user quantity ve product id göndermiş olursun ayrıca sadece user ıd yi validasyona göndermene gerek yok.
+        basket.user_id = Number(userId.id)
 
-      // schemas.default.detail.validateAsync(userId).then((validatedUserId: BasketDetail) => {
             schemas.default.add.validateAsync(basket).then((validatedBasketBody: Basket) => {
                 basketService.addToBasket(validatedBasketBody).then((basketFromService: Basket[]) => {
                     res.status(200).json({
@@ -34,7 +33,6 @@ class BasketController implements IRouterBase{
             }).catch((err: Error) => {
                 next(err)
             })
-      // }
     }
 
     deleteFromBasket(req: express.Request, res: express.Response, next: express.NextFunction) {

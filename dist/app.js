@@ -35,6 +35,7 @@ const loginController_1 = __importDefault(require("./controller/loginController"
 const productController_1 = __importDefault(require("./controller/productController"));
 const userController_1 = __importDefault(require("./controller/userController"));
 const knex_1 = __importDefault(require("./db/knex"));
+const errorHandler_1 = __importDefault(require("./middleware/errorHandler"));
 class YApp {
     constructor() {
         this.app = (0, express_1.default)();
@@ -46,6 +47,7 @@ class YApp {
     init() {
         this.app.use(express_1.default.json({ limit: "3mb" }));
         this.app.use(express_1.default.urlencoded({ extended: false }));
+        this.app.use(errorHandler_1.default);
         this.app.use("/", this.appRouter);
         this.appRouter.use("/user", userController_1.default);
         this.appRouter.use("/product", productController_1.default);

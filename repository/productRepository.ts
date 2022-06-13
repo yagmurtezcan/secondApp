@@ -1,5 +1,6 @@
 import knexDB from "../db/knex";
 import Product from "../interface/IProduct";
+import { ProductNotFoundException } from "../src/common/http.exception";
 
 class ProductRepository {
     getAllProduct(): Promise<Product[]> {
@@ -15,31 +16,32 @@ class ProductRepository {
         })
     }
 
-    createProduct(product: Product): Promise<Product[]> {
+    createProduct(product: Product): Promise<Product> {
         return new Promise((resolve, rejects) => {
             knexDB.db("product")
                 .insert(product)
                 .returning("*")
                 .then((res: Product[]) => {
                     const product = res
-                    resolve(product)
+                    resolve(product[0])
                 }).catch((err: Error) => {
                     rejects(err)
                 })
         })
     }
 
-    getProductById(productId: number): Promise<Product[]> {
+    getProductById(productId: number): Promise<Product> {
         return new Promise((resolve, rejects) => {
             knexDB.db("product")
                 .select("*")
+                .first()
                 .where("id", productId)
-                .then((res: Product[]) => {
+                .then((res: Product) => {
                     const product = res
-                    if(product.length > 0){
+                    if(product){
                         resolve(product)
                     }else{
-                        rejects("product not found")
+                        rejects(new ProductNotFoundException("Product Not Found"))
                     }
                 }).catch((err: Error) => {
                     rejects(err)

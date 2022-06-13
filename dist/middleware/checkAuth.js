@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../config"));
 const userRepository_1 = __importDefault(require("../repository/userRepository"));
+const http_exception_1 = require("../src/common/http.exception");
 function verifyToken(req, res, next) {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
@@ -22,7 +23,7 @@ function verifyToken(req, res, next) {
         if (token) {
             jsonwebtoken_1.default.verify(token, config_1.default.secret_key, (error, decoded) => {
                 if (error)
-                    next("token not found");
+                    next(new http_exception_1.TokenNotFoundException());
                 else if (decoded) {
                     userRepository_1.default.checkUserActivity(decoded.email).then((activeUser) => {
                         req.user = activeUser;
@@ -34,7 +35,7 @@ function verifyToken(req, res, next) {
             });
         }
         else {
-            next("Token Not found");
+            next(new http_exception_1.TokenNotFoundException());
         }
     });
 }

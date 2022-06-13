@@ -1,31 +1,32 @@
 import Product from "../interface/IProduct";
 import productRepository from "../repository/productRepository";
+import OperationCompleted from "../src/common/http.response";
 
 class ProductService {
-    getAllProduct(): Promise<Product[]> {
+    getAllProduct(): Promise<OperationCompleted> {
         return new Promise((resolve, rejects) => {
             productRepository.getAllProduct().then((productFromRepository: Product[]) => {
-                resolve(productFromRepository)
+                resolve(new OperationCompleted(undefined, productFromRepository))
             }).catch((err: Error) => {
                 rejects(err)
             })
         })
     }
 
-    getProductById(productId: number): Promise<Product[]> {
+    getProductById(productId: number): Promise<OperationCompleted> {
         return new Promise((resolve, rejects) => {
-            productRepository.getProductById(productId).then((existProduct: Product[]) => {
-                resolve(existProduct)
+            productRepository.getProductById(productId).then((existProduct: Product) => {
+                resolve(new OperationCompleted(undefined, existProduct))
             }).catch((err: Error) => {
                 rejects(err)
             })
         })
     }
 
-    createProduct(product: Product): Promise<Product[]> {
+    createProduct(product: Product): Promise<OperationCompleted> {
         return new Promise((resolve, rejects) => {
-            productRepository.createProduct(product).then((productFromRepository: Product[]) => {
-                resolve(productFromRepository)
+            productRepository.createProduct(product).then((productFromRepository: Product) => {
+                resolve(new OperationCompleted(undefined, productFromRepository))
             }).catch((err: Error) => {
                 rejects(err)
             })
@@ -33,11 +34,11 @@ class ProductService {
         })
     }
 
-    deleteProduct(productId: number): Promise<number> {
+    deleteProduct(productId: number): Promise<OperationCompleted> {
         return new Promise((resolve, rejects) => {
             productRepository.getProductById(productId).then((resFromDB) => {
                 productRepository.deleteProduct(productId).then((deletedProduct: number) => {
-                    resolve(deletedProduct)
+                    resolve(new OperationCompleted(undefined))
                 }).catch((err: Error) => {
                     rejects(err)
                 })

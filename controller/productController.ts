@@ -3,6 +3,7 @@ import Product from "../interface/IProduct";
 import IRouterBase from "../interface/IRouter"
 import ProductDetail from "../interface/RequestProductDetail";
 import productService from "../service/ProductService";
+import OperationCompleted from "../src/common/http.response";
 import * as schemas from "../validator/productValidator";
 
 class ProductController implements IRouterBase {
@@ -15,12 +16,8 @@ class ProductController implements IRouterBase {
 
 
     getAllProduct(req: express.Request, res: express.Response, next: express.NextFunction) {
-        productService.getAllProduct().then((productFromService: Product[]) => {
-            res.status(200).json({
-                status_code: 1,
-                message: "Operation Completed",
-                data: productFromService
-            })
+        productService.getAllProduct().then((productFromService: OperationCompleted) => {
+            res.status(200).send(productFromService)
         }).catch((err: Error) => {
             next(err)
         })
@@ -30,12 +27,8 @@ class ProductController implements IRouterBase {
         const productInfo = {id: req.params.id}
         
         schemas.default.detail.validateAsync(productInfo).then((validatedId: ProductDetail) => {
-            productService.getProductById(validatedId.id).then((product: Product[]) => {
-                res.status(200).json({
-                    status_code: 1,
-                    message: "Operation Completed",
-                    data: product
-                })
+            productService.getProductById(validatedId.id).then((product: OperationCompleted) => {
+                res.status(200).send(product)
             }).catch((err: Error) => {
                 next(err)
             })
@@ -48,12 +41,8 @@ class ProductController implements IRouterBase {
         const product: Product = req.body
 
         schemas.default.create.validateAsync(product).then((validatedProduct: Product) => {
-            productService.createProduct(validatedProduct).then((productFromService: Product[]) => {
-                res.status(200).json({
-                    status_code: 1,
-                    message: "Operation Completed",
-                    data: productFromService
-                })
+            productService.createProduct(validatedProduct).then((productFromService: OperationCompleted) => {
+                res.status(200).send(productFromService)
             }).catch((err: Error) => {
                 next(err)
             })
@@ -67,11 +56,8 @@ class ProductController implements IRouterBase {
         const productInfo = {id: req.params.id}
     
         schemas.default.detail.validateAsync(productInfo).then((validatedId: ProductDetail) => {
-            productService.deleteProduct(validatedId.id).then((productFromService: number) => {
-                res.status(200).json({
-                    status_code: 1,
-                    message: "Operation Completed"
-                })
+            productService.deleteProduct(validatedId.id).then((productFromService: OperationCompleted) => {
+                res.status(200).send(productFromService)
             }).catch((err: Error) => {
                 next(err)
             })
