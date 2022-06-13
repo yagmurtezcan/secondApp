@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserAlreadyExist = exports.TokenNotFoundException = exports.HttpException = void 0;
+exports.ProductNotFoundException = exports.UserNotFoundException = exports.UserAlreadyExistException = exports.TokenNotFoundException = exports.HttpException = void 0;
 class HttpException extends Error {
     constructor(status, message, statusCode, data) {
         super();
@@ -12,18 +12,34 @@ class HttpException extends Error {
 exports.HttpException = HttpException;
 class TokenNotFoundException extends HttpException {
     constructor(message = "Token not found", statusCode) {
-        super(500, message, statusCode);
+        super(409, message, statusCode);
         this.message = message;
-        this.status_code = statusCode ? statusCode : 1;
+        this.status_code = statusCode ? statusCode : 2;
     }
 }
 exports.TokenNotFoundException = TokenNotFoundException;
-class UserAlreadyExist extends HttpException {
+class UserAlreadyExistException extends HttpException {
     constructor(message, statusCode) {
         if (!statusCode)
             statusCode = 2;
         super(500, message || "User already exist", statusCode);
     }
 }
-exports.UserAlreadyExist = UserAlreadyExist;
+exports.UserAlreadyExistException = UserAlreadyExistException;
+class UserNotFoundException extends HttpException {
+    constructor(message, statusCode) {
+        if (!statusCode)
+            statusCode = 2;
+        super(400, message || "User not found", statusCode);
+    }
+}
+exports.UserNotFoundException = UserNotFoundException;
+class ProductNotFoundException extends HttpException {
+    constructor(message, statusCode) {
+        if (!statusCode)
+            statusCode = 2;
+        super(400, message || "Product not found", statusCode);
+    }
+}
+exports.ProductNotFoundException = ProductNotFoundException;
 //# sourceMappingURL=http.exception.js.map

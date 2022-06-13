@@ -47,7 +47,7 @@ class UserService {
     getUser(userId) {
         return new Promise((resolve, rejects) => {
             userRepository_1.default.getUser(userId).then((user) => {
-                resolve(user);
+                resolve(new http_response_1.default(undefined, user));
             }).catch((err) => {
                 rejects(err);
             });
@@ -57,7 +57,7 @@ class UserService {
         return new Promise((resolve, rejects) => __awaiter(this, void 0, void 0, function* () {
             userRepository_1.default.getUser(userId).then((user) => {
                 userRepository_1.default.updateUser(userUpdateData, userId).then((updatedUser) => {
-                    resolve(updatedUser);
+                    resolve(new http_response_1.default(undefined, user));
                 }).catch((err) => {
                     rejects(err);
                 });
@@ -70,7 +70,7 @@ class UserService {
         return new Promise((resolve, rejects) => {
             userRepository_1.default.getUser(userId).then((user) => {
                 userRepository_1.default.deleteUser(userId).then((deletedUser) => {
-                    resolve(deletedUser);
+                    resolve(new http_response_1.default);
                 }).catch((err) => {
                     rejects(err);
                 });

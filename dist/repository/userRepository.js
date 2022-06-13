@@ -39,7 +39,7 @@ class UserRepository {
                     resolve(user);
                 }
                 else {
-                    rejects("user not found");
+                    rejects(new http_exception_1.UserNotFoundException("User not Found"));
                 }
             }).catch((err) => {
                 rejects(err);
@@ -53,7 +53,7 @@ class UserRepository {
                 .where("email", email)
                 .then((res) => {
                 if (res) {
-                    rejects(new http_exception_1.UserAlreadyExist("User already exist"));
+                    rejects(new http_exception_1.UserAlreadyExistException("User already exist"));
                 }
                 else {
                     resolve(res);

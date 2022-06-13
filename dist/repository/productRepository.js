@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const knex_1 = __importDefault(require("../db/knex"));
+const http_exception_1 = require("../src/common/http.exception");
 class ProductRepository {
     getAllProduct() {
         return new Promise((resolve, rejects) => {
@@ -24,7 +25,7 @@ class ProductRepository {
                 .returning("*")
                 .then((res) => {
                 const product = res;
-                resolve(product);
+                resolve(product[0]);
             }).catch((err) => {
                 rejects(err);
             });
@@ -34,14 +35,15 @@ class ProductRepository {
         return new Promise((resolve, rejects) => {
             knex_1.default.db("product")
                 .select("*")
+                .first()
                 .where("id", productId)
                 .then((res) => {
                 const product = res;
-                if (product.length > 0) {
+                if (product) {
                     resolve(product);
                 }
                 else {
-                    rejects("product not found");
+                    rejects(new http_exception_1.ProductNotFoundException("Product Not Found"));
                 }
             }).catch((err) => {
                 rejects(err);

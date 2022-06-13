@@ -39,3 +39,10 @@ export class ProductNotFoundException extends HttpException {
         super(400, message || "Product not found", statusCode)
     }
 }
+
+export class SelectPhotoException extends HttpException {
+    constructor(message: string, statusCode?: number) {
+        if(!statusCode) statusCode: 2
+        super(400, message || "Please select a photo", statusCode)
+    }
+}

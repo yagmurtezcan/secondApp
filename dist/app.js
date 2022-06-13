@@ -45,23 +45,32 @@ class YApp {
         this.port = 3000;
     }
     init() {
-        this.app.use(express_1.default.json({ limit: "3mb" }));
-        this.app.use(express_1.default.urlencoded({ extended: false }));
-        this.app.use(errorHandler_1.default);
-        this.app.use("/", this.appRouter);
-        this.appRouter.use("/user", userController_1.default);
-        this.appRouter.use("/product", productController_1.default);
-        this.appRouter.use("/", basketController_1.default);
-        this.appRouter.use("/login", loginController_1.default);
-        this.appRouter.use("/", fileUploadController_1.default);
-        this.server = http.createServer(this.app);
-        this.server.on("error", (err) => {
-            process.exit(2);
+        return new Promise((resolve, rejects) => {
+            try {
+                this.app.use(express_1.default.json({ limit: "3mb" }));
+                this.app.use(express_1.default.urlencoded({ extended: false }));
+                this.app.use("/", this.appRouter);
+                this.appRouter.use("/user", userController_1.default);
+                this.appRouter.use("/product", productController_1.default);
+                this.appRouter.use("/", basketController_1.default);
+                this.appRouter.use("/login", loginController_1.default);
+                this.appRouter.use("/", fileUploadController_1.default);
+                this.server = http.createServer(this.app);
+                this.server.on("error", (err) => {
+                    process.exit(2);
+                });
+                this.server.listen(3000, () => {
+                    console.log(`Server is running on ${this.port}`);
+                });
+                knex_1.default.init();
+            }
+            catch (error) {
+                console.log(error);
+            }
+            finally {
+                this.app.use(errorHandler_1.default);
+            }
         });
-        this.server.listen(3000, () => {
-            console.log(`Server is running on ${this.port}`);
-        });
-        knex_1.default.init();
     }
 }
 exports.YApp = YApp;

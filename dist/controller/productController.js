@@ -36,11 +36,7 @@ class ProductController {
     }
     getAllProduct(req, res, next) {
         ProductService_1.default.getAllProduct().then((productFromService) => {
-            res.status(200).json({
-                status_code: 1,
-                message: "Operation Completed",
-                data: productFromService
-            });
+            res.status(200).send(productFromService);
         }).catch((err) => {
             next(err);
         });
@@ -49,11 +45,7 @@ class ProductController {
         const productInfo = { id: req.params.id };
         schemas.default.detail.validateAsync(productInfo).then((validatedId) => {
             ProductService_1.default.getProductById(validatedId.id).then((product) => {
-                res.status(200).json({
-                    status_code: 1,
-                    message: "Operation Completed",
-                    data: product
-                });
+                res.status(200).send(product);
             }).catch((err) => {
                 next(err);
             });
@@ -65,11 +57,7 @@ class ProductController {
         const product = req.body;
         schemas.default.create.validateAsync(product).then((validatedProduct) => {
             ProductService_1.default.createProduct(validatedProduct).then((productFromService) => {
-                res.status(200).json({
-                    status_code: 1,
-                    message: "Operation Completed",
-                    data: productFromService
-                });
+                res.status(200).send(productFromService);
             }).catch((err) => {
                 next(err);
             });
@@ -81,10 +69,7 @@ class ProductController {
         const productInfo = { id: req.params.id };
         schemas.default.detail.validateAsync(productInfo).then((validatedId) => {
             ProductService_1.default.deleteProduct(validatedId.id).then((productFromService) => {
-                res.status(200).json({
-                    status_code: 1,
-                    message: "Operation Completed"
-                });
+                res.status(200).send(productFromService);
             }).catch((err) => {
                 next(err);
             });
