@@ -7,6 +7,8 @@ import UserDetail from "../interface/RequestUserDetail";
 import checkAuth from "../middleware/checkAuth"
 import upload from "../middleware/uploadProfilePhoto";
 import OperationCompleted from "../src/common/http.response";
+import permissonMiddleware from "../middleware/permissionMiddleware";
+import { Roles } from "../helpers/roles";
 
 class UserController implements IRouterBase {
   router: express.Router;
@@ -82,7 +84,7 @@ class UserController implements IRouterBase {
   }
 
   routes() {
-    this.router.get("/", checkAuth, this.getAllUser.bind(this));
+    this.router.get("/", checkAuth, permissonMiddleware([Roles.Admin]),this.getAllUser.bind(this));
     this.router.post("/", upload.single("image"), this.createUser.bind(this));
     this.router.get("/:id", checkAuth, this.getUser.bind(this));
     this.router.put("/:id", checkAuth, this.updateUser.bind(this));

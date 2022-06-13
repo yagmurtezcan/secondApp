@@ -6,5 +6,6 @@ export default interface TokenUser {
     lastname: string,
     age: number,
     password: string,
-    image: string
+    image: string,
+    role: number,
 }

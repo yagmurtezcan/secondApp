@@ -7,4 +7,5 @@ export default interface User {
   isActive: boolean;
   password: string;
   image: string;
+  role: number
 }

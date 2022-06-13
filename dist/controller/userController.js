@@ -31,6 +31,8 @@ const UserService_1 = __importDefault(require("../service/UserService"));
 const schemas = __importStar(require("../validator/userValidator"));
 const checkAuth_1 = __importDefault(require("../middleware/checkAuth"));
 const uploadProfilePhoto_1 = __importDefault(require("../middleware/uploadProfilePhoto"));
+const permissionMiddleware_1 = __importDefault(require("../middleware/permissionMiddleware"));
+const roles_1 = require("../helpers/roles");
 class UserController {
     constructor() {
         this.router = express_1.default.Router();
@@ -93,7 +95,7 @@ class UserController {
         });
     }
     routes() {
-        this.router.get("/", checkAuth_1.default, this.getAllUser.bind(this));
+        this.router.get("/", checkAuth_1.default, (0, permissionMiddleware_1.default)([roles_1.Roles.Admin]), this.getAllUser.bind(this));
         this.router.post("/", uploadProfilePhoto_1.default.single("image"), this.createUser.bind(this));
         this.router.get("/:id", checkAuth_1.default, this.getUser.bind(this));
         this.router.put("/:id", checkAuth_1.default, this.updateUser.bind(this));

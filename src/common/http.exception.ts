@@ -42,7 +42,14 @@ export class ProductNotFoundException extends HttpException {
 
 export class SelectPhotoException extends HttpException {
     constructor(message: string, statusCode?: number) {
-        if(!statusCode) statusCode: 2
+        if(!statusCode) statusCode = 2
         super(400, message || "Please select a photo", statusCode)
+    }
+}
+
+export class UnAutorizedPerson extends HttpException {
+    constructor(message: string, statusCode?: number) {
+        if(!statusCode) statusCode = 2
+        super(400, message || "You dont have permission", statusCode)
     }
 }
