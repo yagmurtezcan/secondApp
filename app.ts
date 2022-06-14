@@ -1,4 +1,3 @@
-import { rejects } from "assert";
 import express from "express"
 import * as http from "http";
 import basketController from "./controller/basketController";
@@ -47,13 +46,13 @@ export class YApp {
         })
     
         knexDB.init()
+
       } catch (error) {
         console.log(error)
       }finally {
         this.app.use(errorHandler)
       }
     })
-
   }
 }
 

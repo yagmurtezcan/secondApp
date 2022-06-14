@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const http_exception_1 = require("../src/common/http.exception");
 function permissonMiddleware(permission) {
     return (req, res, next) => {
         const userRole = req.user.role;
@@ -7,7 +8,7 @@ function permissonMiddleware(permission) {
             next();
         }
         else {
-            next("you dont have permission");
+            next(new http_exception_1.UnAutorizedPerson("You dont have permission"));
         }
     };
 }
