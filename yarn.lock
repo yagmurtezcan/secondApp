@@ -711,6 +711,11 @@ etag@~1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==
 
+eventemitter3@^2.0.0:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-2.0.3.tgz#b5e1079b59fb5e1ba2771c0a993be060a58c99ba"
+  integrity sha512-jLN68Dx5kyFHaePoXWPsCGW5qdyZQtLYHkxkg02/Mz6g0kYpDx4FyP6XfArhQdlOC4b8Mv+EMxPo/8La7Tzghg==
+
 express@^4.18.1:
   version "4.18.1"
   resolved "https://registry.yarnpkg.com/express/-/express-4.18.1.tgz#7797de8b9c72c857b9cd0e14a5eea80666267caf"
@@ -747,6 +752,13 @@ express@^4.18.1:
     type-is "~1.6.18"
     utils-merge "1.0.1"
     vary "~1.1.2"
+
+fast-xml-parser@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/fast-xml-parser/-/fast-xml-parser-4.0.8.tgz#abf0fbfe477b90b796118bd097a3afa4b9b4673f"
+  integrity sha512-N4XqZaRMuHMvOFwFlqeBTlvrnXU+QN8wvCl2g9fHzMx2BnLoIYRDwy6XwI8FxogHMFI9OfGQBCddgckvSLTnvg==
+  dependencies:
+    strnum "^1.0.5"
 
 file-uri-to-path@1.0.0:
   version "1.0.0"
@@ -1922,6 +1934,11 @@ strip-json-comments@~2.0.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
   integrity sha512-4gB8na07fecVVkOI6Rs4e7T6NOTki5EmL7TUduTs6bu3EdnSycntVJ4re8kgZA+wx9IueI2Y11bfbgwtzuE0KQ==
 
+strnum@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/strnum/-/strnum-1.0.5.tgz#5c4e829fe15ad4ff0d20c3db5ac97b73c9b072db"
+  integrity sha512-J8bbNyKKXl5qYcR36TIO8W3mVGVHrmmxsd5PAItGkmyzwJvybiw2IVq5nqd0i4LSNSkB/sx9VHllbfFdr9k1JA==
+
 supports-color@^5.5.0:
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-5.5.0.tgz#e2e69a44ac8772f78a1ec0b35b689df6530efc8f"
@@ -2180,10 +2197,25 @@ xml-formatter@^2.6.1:
   dependencies:
     xml-parser-xo "^3.2.0"
 
+xml-lexer@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/xml-lexer/-/xml-lexer-0.2.2.tgz#518193a4aa334d58fc7d248b549079b89907e046"
+  integrity sha512-G0i98epIwiUEiKmMcavmVdhtymW+pCAohMRgybyIME9ygfVu8QheIi+YoQh3ngiThsT0SQzJT4R0sKDEv8Ou0w==
+  dependencies:
+    eventemitter3 "^2.0.0"
+
 xml-parser-xo@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/xml-parser-xo/-/xml-parser-xo-3.2.0.tgz#c633ab55cf1976d6b03ab4a6a85045093ac32b73"
   integrity sha512-8LRU6cq+d7mVsoDaMhnkkt3CTtAs4153p49fRo+HIB3I1FD1o5CeXRjRH29sQevIfVJIcPjKSsPU/+Ujhq09Rg==
+
+xml-reader@^2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/xml-reader/-/xml-reader-2.4.3.tgz#9f810caf7c425a5aafb848b1c45103c9e71d7530"
+  integrity sha512-xWldrIxjeAMAu6+HSf9t50ot1uL5M+BtOidRCWHXIeewvSeIpscWCsp4Zxjk8kHHhdqFBrfK8U0EJeCcnyQ/gA==
+  dependencies:
+    eventemitter3 "^2.0.0"
+    xml-lexer "^0.2.2"
 
 xml2js@^0.4.23:
   version "0.4.23"

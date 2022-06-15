@@ -36,6 +36,7 @@ const productController_1 = __importDefault(require("./controller/productControl
 const userController_1 = __importDefault(require("./controller/userController"));
 const knex_1 = __importDefault(require("./db/knex"));
 const errorHandler_1 = __importDefault(require("./middleware/errorHandler"));
+const XmlReader = require("xml-reader");
 class YApp {
     constructor() {
         this.app = (0, express_1.default)();
@@ -63,6 +64,19 @@ class YApp {
                     console.log(`Server is running on ${this.port}`);
                 });
                 knex_1.default.init();
+                // const xml = "<doc>Hello!</doc>"
+                // const result = XmlReader.parseSync(xml)
+                // console.log(result)
+                const reader = XmlReader.create({ stream: true });
+                const xml = `<root>
+          <item v=1/>
+          <item v=2/>
+          <item v=3/>
+          </root>`;
+                reader.on('tag:item', (data) => console.log(data));
+                reader.on('done', (data) => console.log("children length: ", data.children.length));
+                const readr = xml.split('').forEach(char => reader.parse(char));
+                console.log(readr);
             }
             catch (error) {
                 console.log(error);

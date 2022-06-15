@@ -1,4 +1,5 @@
 import express from "express"
+import { read } from "fs";
 import * as http from "http";
 import basketController from "./controller/basketController";
 import fileUploadController from "./controller/fileUploadController";
@@ -7,6 +8,9 @@ import productController from "./controller/productController";
 import userController from "./controller/userController";
 import knexDB from "./db/knex";
 import errorHandler from "./middleware/errorHandler";
+
+
+const XmlReader = require("xml-reader")
 
 export class YApp {
   app: express.Application;
@@ -46,6 +50,27 @@ export class YApp {
         })
     
         knexDB.init()
+
+        // const xml = "<doc>Hello!</doc>"
+        // const result = XmlReader.parseSync(xml)
+        // console.log(result)
+
+        const reader = XmlReader.create({stream: true});
+        const xml =
+         `<root>
+          <item v=1/>
+          <item v=2/>
+          <item v=3/>
+          </root>`;
+
+        reader.on('tag:item', (data: any) => console.log(data));
+
+        reader.on('done', (data: any) => console.log("children length: ", data.children.length));
+
+        const readr = xml.split('').forEach(char => reader.parse(char));
+
+        console.log(readr)
+
 
       } catch (error) {
         console.log(error)
